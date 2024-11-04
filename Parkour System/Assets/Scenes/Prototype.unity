@@ -336,10 +336,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gInput: {fileID: 1487575987}
   target: {fileID: 1291577432}
+  rotationSpeed: 0.1
   distance: 5
   minYAangle: -45
   maxYAngle: 45
   offset: {x: 0, y: 2}
+  invertX: 0
+  invertY: 1
 --- !u!114 &1096654763
 MonoBehaviour:
   m_ObjectHideFlags: 0
