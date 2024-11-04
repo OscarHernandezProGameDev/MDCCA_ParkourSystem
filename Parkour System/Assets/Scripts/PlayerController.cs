@@ -6,10 +6,11 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     [SerializeField] private GatherInput gInput;
-    [SerializeField] private float moveSpeed = 5f;
+    [SerializeField] private float moveSpeed = 5f, rotationSpeed = 500f;
 
     private CameraController cameraController;
     private Vector3 moveInput;
+    private Quaternion tarjetRotation;
 
     private void Awake()
     {
@@ -26,7 +27,10 @@ public class PlayerController : MonoBehaviour
         {
             transform.position += moveDir * moveSpeed * Time.deltaTime;
             // para que mire en la direccion que mira el input
-            transform.rotation = Quaternion.LookRotation(moveDir);
+            tarjetRotation = Quaternion.LookRotation(moveDir);
+            // Para hacer una rotacion suave
+            transform.rotation =
+                Quaternion.RotateTowards(transform.rotation, tarjetRotation, rotationSpeed * Time.deltaTime);
         }
     }
 }
