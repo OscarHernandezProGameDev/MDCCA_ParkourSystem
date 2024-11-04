@@ -17,6 +17,8 @@ public class CameraController : MonoBehaviour
     private float rotationY, rotationX;
     private float invertValueX, invertValueY;
 
+    public Quaternion GetYRotation() => Quaternion.Euler(0, rotationY, 0);
+
     private void Start()
     {
         Cursor.visible = false;
