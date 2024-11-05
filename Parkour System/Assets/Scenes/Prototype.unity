@@ -915,10 +915,20 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7571588735668202842, guid: 705ade012c9d79b4f9597ca1cd98cd0e,
+        type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 7571588735668202843, guid: 705ade012c9d79b4f9597ca1cd98cd0e,
         type: 3}
       propertyPath: m_Name
       value: HumanFemale_Character (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 7571588735668202843, guid: 705ade012c9d79b4f9597ca1cd98cd0e,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8104563951194415188, guid: 705ade012c9d79b4f9597ca1cd98cd0e,
         type: 3}
