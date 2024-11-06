@@ -4,6 +4,13 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
+/// <summary>
+/// https://docs.unity3d.com/es/2018.4/Manual/class-CharacterController.html. Para configurar los valores del CharacterController
+/// El radio del character controller y de la esfera que usamos para el GroundCheck tiene que ser iguales o muy iguales
+/// Skin width : Un buen ajuste es hacer este valor 10% del Radius.Dos Colliders pueden penetrarse entre sí tan profundo como el ancho de su piel (Skin Width).
+/// Mayores Skin Widths van a reducir la fluctuación de fase.  Bajo Skin Width puede causar al personaje en quedarse atrapado. Un buen ajuste es hacer este valor 10% del Radius.
+/// Center = Height / 2 + Skin Width
+/// </summary>
 public class PlayerController : MonoBehaviour
 {
     [SerializeField] private GatherInput gInput;
