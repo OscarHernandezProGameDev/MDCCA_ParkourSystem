@@ -407,7 +407,7 @@ MonoBehaviour:
   target: {fileID: 1480652978}
   rotationSpeed: 0.1
   distance: 5
-  minYAangle: -45
+  minYAangle: -20
   maxYAngle: 45
   offset: {x: 0, y: 2}
   invertX: 0
@@ -608,7 +608,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aa51ac70e201ab878a0283bdae2ff782, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  smoothTime: 4
+  smoothTime: 2
   mouseInput: {x: 0, y: 0}
   smoothedDirection: {x: 0, y: 0}
 --- !u!1 &1589511884

@@ -37,6 +37,7 @@ public class PlayerController : MonoBehaviour
                 Quaternion.RotateTowards(transform.rotation, tarjetRotation, rotationSpeed * Time.deltaTime);
         }
 
-        animator.SetFloat("MoveAmount", moveAmount);
+        // dampTime: 0.1f
+        animator.SetFloat("MoveAmount", moveAmount,0.15f,Time.deltaTime);
     }
 }
