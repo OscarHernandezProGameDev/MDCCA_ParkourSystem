@@ -1,12 +1,19 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
     [SerializeField] private GatherInput gInput;
     [SerializeField] private float moveSpeed = 5f, rotationSpeed = 500f;
+
+    [Header("GroundCheck")] [SerializeField]
+    private float groundCheckRadius = 0.2f;
+
+    [SerializeField] private Vector3 groundCheckOffset;
+    [SerializeField] private LayerMask groundLayer;
 
     private CameraController cameraController;
     private CharacterController characterController;
@@ -33,7 +40,7 @@ public class PlayerController : MonoBehaviour
         {
             //transform.position += moveDir * moveSpeed * Time.deltaTime;
             characterController.Move(moveDir * moveSpeed * Time.deltaTime);
-            
+
             // para que mire en la direccion que mira el input
             tarjetRotation = Quaternion.LookRotation(moveDir);
             // Para hacer una rotacion suave
@@ -42,6 +49,22 @@ public class PlayerController : MonoBehaviour
         }
 
         // dampTime: 0.1f
-        animator.SetFloat("MoveAmount", moveAmount,0.15f,Time.deltaTime);
+        animator.SetFloat("MoveAmount", moveAmount, 0.15f, Time.deltaTime);
+
+        Debug.Log($"IsGrounded: {CheckGround()}");
+    }
+
+    void OnDrawGizmosSelected()
+    {
+        Gizmos.color = new Color(0, 1, 0, 0.5f);
+        Gizmos.DrawSphere(transform.TransformPoint(groundCheckOffset), groundCheckRadius);
+    }
+
+    private bool CheckGround()
+    {
+        bool isGrounded =
+            Physics.CheckSphere(transform.TransformPoint(groundCheckOffset), groundCheckRadius, groundLayer);
+
+        return isGrounded;
     }
 }
