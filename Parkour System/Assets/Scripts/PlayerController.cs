@@ -9,18 +9,22 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float moveSpeed = 5f, rotationSpeed = 500f;
 
     private CameraController cameraController;
+    private Animator animator;
     private Vector3 moveInput;
     private Quaternion tarjetRotation;
 
     private void Awake()
     {
         cameraController = Camera.main.GetComponent<CameraController>();
+        animator = GetComponent<Animator>();
     }
 
     void Update()
     {
-        moveInput = new Vector3(gInput.direction.x, 0, gInput.direction.y);
+        Vector2 direction = gInput.smoothedDirection;
+        moveInput = new Vector3(direction.x, 0, direction.y);
 
+        float moveAmount = Mathf.Clamp01(Mathf.Abs(direction.x) + Mathf.Abs(direction.y));
         var moveDir = cameraController.GetYRotation() * moveInput;
 
         if (moveDir.sqrMagnitude > 0f)
@@ -32,5 +36,7 @@ public class PlayerController : MonoBehaviour
             transform.rotation =
                 Quaternion.RotateTowards(transform.rotation, tarjetRotation, rotationSpeed * Time.deltaTime);
         }
+
+        animator.SetFloat("MoveAmount", moveAmount);
     }
 }

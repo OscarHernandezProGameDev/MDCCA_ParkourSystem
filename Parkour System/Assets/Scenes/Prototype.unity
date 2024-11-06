@@ -608,8 +608,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aa51ac70e201ab878a0283bdae2ff782, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  smoothTime: 4
   mouseInput: {x: 0, y: 0}
-  direction: {x: 0, y: 0}
+  smoothedDirection: {x: 0, y: 0}
 --- !u!1 &1589511884
 GameObject:
   m_ObjectHideFlags: 0
