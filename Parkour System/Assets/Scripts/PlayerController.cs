@@ -9,6 +9,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float moveSpeed = 5f, rotationSpeed = 500f;
 
     private CameraController cameraController;
+    private CharacterController characterController;
     private Animator animator;
     private Vector3 moveInput;
     private Quaternion tarjetRotation;
@@ -17,6 +18,7 @@ public class PlayerController : MonoBehaviour
     {
         cameraController = Camera.main.GetComponent<CameraController>();
         animator = GetComponent<Animator>();
+        characterController = GetComponent<CharacterController>();
     }
 
     void Update()
@@ -29,7 +31,9 @@ public class PlayerController : MonoBehaviour
 
         if (moveDir.sqrMagnitude > 0f)
         {
-            transform.position += moveDir * moveSpeed * Time.deltaTime;
+            //transform.position += moveDir * moveSpeed * Time.deltaTime;
+            characterController.Move(moveDir * moveSpeed * Time.deltaTime);
+            
             // para que mire en la direccion que mira el input
             tarjetRotation = Quaternion.LookRotation(moveDir);
             // Para hacer una rotacion suave
