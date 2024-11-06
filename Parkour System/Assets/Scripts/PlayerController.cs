@@ -20,12 +20,16 @@ public class PlayerController : MonoBehaviour
     private Animator animator;
     private Vector3 moveInput;
     private Quaternion tarjetRotation;
+    private float ySpeed;
 
     private void Awake()
     {
         cameraController = Camera.main.GetComponent<CameraController>();
         animator = GetComponent<Animator>();
         characterController = GetComponent<CharacterController>();
+
+        // Para garantizar un fps constante
+        Application.targetFrameRate = 60;
     }
 
     void Update()
@@ -36,11 +40,22 @@ public class PlayerController : MonoBehaviour
         float moveAmount = Mathf.Clamp01(Mathf.Abs(direction.x) + Mathf.Abs(direction.y));
         var moveDir = cameraController.GetYRotation() * moveInput;
 
+        if (CheckGround())
+        {
+            // No lo podemos a cero para asegurarnos que el jugado siempre este en el suelo
+            ySpeed = -1f;
+        }
+        else
+            ySpeed += Physics.gravity.y * Time.deltaTime;
+
+        var velocity = moveDir * moveSpeed;
+
+        velocity.y = ySpeed;
+
+        //transform.position += moveDir * moveSpeed * Time.deltaTime;
+        characterController.Move(velocity * Time.deltaTime);
         if (moveDir.sqrMagnitude > 0f)
         {
-            //transform.position += moveDir * moveSpeed * Time.deltaTime;
-            characterController.Move(moveDir * moveSpeed * Time.deltaTime);
-
             // para que mire en la direccion que mira el input
             tarjetRotation = Quaternion.LookRotation(moveDir);
             // Para hacer una rotacion suave
@@ -50,8 +65,6 @@ public class PlayerController : MonoBehaviour
 
         // dampTime: 0.1f
         animator.SetFloat("MoveAmount", moveAmount, 0.15f, Time.deltaTime);
-
-        Debug.Log($"IsGrounded: {CheckGround()}");
     }
 
     void OnDrawGizmosSelected()
