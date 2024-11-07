@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 /// <summary>
 /// https://docs.unity3d.com/es/2018.4/Manual/class-CharacterController.html. Para configurar los valores del CharacterController
@@ -13,7 +14,7 @@ using UnityEngine;
 /// </summary>
 public class PlayerController : MonoBehaviour
 {
-    [SerializeField] private GatherInput gInput;
+    [SerializeField] private GatherInput gatherInput;
     [SerializeField] private float moveSpeed = 5f, rotationSpeed = 500f;
 
     [Header("GroundCheck")] [SerializeField]
@@ -41,7 +42,7 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
-        Vector2 direction = gInput.smoothedDirection;
+        Vector2 direction = gatherInput.smoothedDirection;
         moveInput = new Vector3(direction.x, 0, direction.y);
 
         float moveAmount = Mathf.Clamp01(Mathf.Abs(direction.x) + Mathf.Abs(direction.y));
@@ -61,7 +62,8 @@ public class PlayerController : MonoBehaviour
 
         //transform.position += moveDir * moveSpeed * Time.deltaTime;
         characterController.Move(velocity * Time.deltaTime);
-        if (moveDir.sqrMagnitude > 0f)
+        // ya no usamos moveDir.sqrMagnitude porque tenemos la variable moveAmount
+        if (moveAmount > 0f)
         {
             // para que mire en la direccion que mira el input
             tarjetRotation = Quaternion.LookRotation(moveDir);

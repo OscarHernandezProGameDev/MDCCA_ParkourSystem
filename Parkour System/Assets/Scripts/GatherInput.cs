@@ -70,9 +70,10 @@ public class GatherInput : MonoBehaviour
 
     private void CancelLookInput(InputAction.CallbackContext context)
     {
-        // En el gamepad hay que cancelar la action
-        if (usingGamePad)
-            lookInput = Vector2.zero;
+        // En el gamepad hay que cancelar la action porque si leemos la posición del ratón ya lo hace
+        // Si no leemos la posición del ratón sino su delta no cancelamos la acción y por tanto hay que comentar la siguiente linea
+        //if (usingGamePad)
+        lookInput = Vector2.zero;
     }
 
     // En el Input cuando los composive los valores o es 0 o 1, no interpola en el tiempo. Nos interesa esta funcionalidad para usuar en el Animator para pasa de los estados:

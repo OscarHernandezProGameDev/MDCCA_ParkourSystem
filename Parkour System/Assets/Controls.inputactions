@@ -28,7 +28,7 @@
                 {
                     "name": "",
                     "id": "a57f5c93-e45c-47c6-8465-9bcd6de00e99",
-                    "path": "<Mouse>/position",
+                    "path": "<Mouse>/delta",
                     "interactions": "",
                     "processors": "",
                     "groups": ";KeyboardMouse",

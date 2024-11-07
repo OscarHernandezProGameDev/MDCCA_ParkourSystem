@@ -508,9 +508,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1b42f4babcfce75569cda463e545a89a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gInput: {fileID: 1487575987}
+  gatherInput: {fileID: 1487575987}
   target: {fileID: 1480652978}
-  rotationSpeedMouse: 0.3
+  rotationSpeedMouse: 5
   rotationSpeedGamepad: 120
   distance: 5
   minYAangle: -20
@@ -599,7 +599,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 22f30bd355ecebe408a8a50015079b78, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gInput: {fileID: 1487575987}
+  gatherInput: {fileID: 1487575987}
   moveSpeed: 5
   rotationSpeed: 500
   groundCheckRadius: 0.15
