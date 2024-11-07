@@ -510,7 +510,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gInput: {fileID: 1487575987}
   target: {fileID: 1480652978}
-  rotationSpeed: 0.1
+  rotationSpeedMouse: 0.3
+  rotationSpeedGamepad: 120
   distance: 5
   minYAangle: -20
   maxYAngle: 45
@@ -746,8 +747,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   smoothTime: 2
-  mouseInput: {x: 0, y: 0}
+  lookInput: {x: 0, y: 0}
   smoothedDirection: {x: 0, y: 0}
+  usingGamePad: 0
 --- !u!1 &1589511884
 GameObject:
   m_ObjectHideFlags: 0

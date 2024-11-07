@@ -14,8 +14,9 @@ public class GatherInput : MonoBehaviour
 
     [SerializeField] private float smoothTime = 4f;
 
-    public Vector2 mouseInput;
+    public Vector2 lookInput;
     public Vector2 smoothedDirection;
+    public bool usingGamePad;
 
     private void Awake()
     {
@@ -26,24 +27,28 @@ public class GatherInput : MonoBehaviour
 
     private void OnEnable()
     {
-        lookAction.performed += ReadMouse;
+        lookAction.performed += ReadLookInput;
 
         // En el Input cuando los composive los valores o es 0 o 1, no interpola en el tiempo. Nos interesa esta funcionalidad para usuar en el Animator para pasa de los estados:
         // Idle, Walk, Run. Usaremos el método Update
 
         // moveAction.performed += ReadDirection;
         // moveAction.canceled += ReadDirection;
+
+        lookAction.canceled += CancelLookInput;
     }
 
     private void OnDisable()
     {
-        lookAction.performed -= ReadMouse;
+        lookAction.performed -= ReadLookInput;
 
         // En el Input cuando los composive los valores o es 0 o 1 o -1, no interpola en el tiempo. Nos interesa esta funcionalidad para usuar en el Animator para pasa de los estados:
         // Idle, Walk, Run. Usaremos el método Update
 
         // moveAction.performed -= ReadDirection;
         // moveAction.canceled -= ReadDirection;
+
+        lookAction.canceled -= CancelLookInput;
     }
 
     private void Update()
@@ -57,9 +62,17 @@ public class GatherInput : MonoBehaviour
         );
     }
 
-    private void ReadMouse(InputAction.CallbackContext context)
+    private void ReadLookInput(InputAction.CallbackContext context)
     {
-        mouseInput = context.ReadValue<Vector2>();
+        lookInput = context.ReadValue<Vector2>();
+        usingGamePad = context.control.device is Gamepad;
+    }
+
+    private void CancelLookInput(InputAction.CallbackContext context)
+    {
+        // En el gamepad hay que cancelar la action
+        if (usingGamePad)
+            lookInput = Vector2.zero;
     }
 
     // En el Input cuando los composive los valores o es 0 o 1, no interpola en el tiempo. Nos interesa esta funcionalidad para usuar en el Animator para pasa de los estados:

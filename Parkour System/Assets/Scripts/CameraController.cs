@@ -7,13 +7,16 @@ public class CameraController : MonoBehaviour
 {
     [SerializeField] private GatherInput gInput;
     [SerializeField] private Transform target;
-    [SerializeField] private float rotationSpeed = 2f;
+
+    [SerializeField] private float rotationSpeedMouse = 0.3f;
+    [SerializeField] private float rotationSpeedGamepad = 100f;
     [SerializeField] private float distance = 5f;
     [SerializeField] private float minYAangle = -45f;
     [SerializeField] private float maxYAngle = 45f;
     [SerializeField] private Vector2 offset;
     [SerializeField] private bool invertX, invertY;
 
+    private float rotationSpeed;
     private float rotationY, rotationX;
     private float invertValueX, invertValueY;
 
@@ -32,8 +35,18 @@ public class CameraController : MonoBehaviour
         invertValueX = invertX ? -1 : 1;
         invertValueY = invertY ? -1 : 1;
 
-        rotationX = gInput.mouseInput.y * invertValueY * rotationSpeed;
-        rotationY = gInput.mouseInput.x * invertValueX * rotationSpeed;
+        if (gInput.usingGamePad)
+        {
+            rotationSpeed = rotationSpeedGamepad;
+            rotationX += gInput.lookInput.y * invertValueY * rotationSpeed * Time.deltaTime;
+            rotationY += gInput.lookInput.x * invertValueX * rotationSpeed * Time.deltaTime;
+        }
+        else
+        {
+            rotationSpeed = rotationSpeedMouse;
+            rotationX = gInput.lookInput.y * invertValueY * rotationSpeed;
+            rotationY = gInput.lookInput.x * invertValueX * rotationSpeed;
+        }
 
         rotationX = Mathf.Clamp(rotationX, minYAangle, maxYAngle);
 
