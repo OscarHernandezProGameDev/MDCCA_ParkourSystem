@@ -8,12 +8,24 @@ public class EnvironmentScanner : MonoBehaviour
     [SerializeField] private float forwardDistance = 0.8f;
     [SerializeField] private LayerMask obstacleLayer;
 
-    public void ObstacleCkech()
+    public ObstacleHitData ObstacleCkech()
     {
+        var hitData = new ObstacleHitData();
         Vector3 forwardOrigin = transform.position + forwardOffset;
-        bool hitFound = Physics.Raycast(forwardOrigin, transform.forward, out RaycastHit hitInfo, forwardDistance,
+
+        hitData.fowardHitFound = Physics.Raycast(forwardOrigin, transform.forward, out hitData.fowardHit,
+            forwardDistance,
             obstacleLayer);
 
-        Debug.DrawRay(forwardOrigin, transform.forward * forwardDistance, hitFound ? Color.green : Color.red);
+        Debug.DrawRay(forwardOrigin, transform.forward * forwardDistance,
+            hitData.fowardHitFound ? Color.green : Color.red);
+
+        return hitData;
+    }
+
+    public struct ObstacleHitData
+    {
+        public bool fowardHitFound;
+        public RaycastHit fowardHit;
     }
 }
