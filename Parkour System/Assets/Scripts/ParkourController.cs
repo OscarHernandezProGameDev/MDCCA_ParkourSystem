@@ -5,12 +5,14 @@ using UnityEngine;
 
 [RequireComponent(typeof(EnvironmentScanner))]
 [RequireComponent(typeof(Animator))]
+[RequireComponent(typeof(PlayerController))]
 public class ParkourController : MonoBehaviour
 {
     [SerializeField] private GatherInput gatherInput;
 
     private EnvironmentScanner scanner;
     private Animator animator;
+    private PlayerController playerController;
 
     private bool inAction;
 
@@ -18,6 +20,7 @@ public class ParkourController : MonoBehaviour
     {
         scanner = GetComponent<EnvironmentScanner>();
         animator = GetComponent<Animator>();
+        playerController = GetComponent<PlayerController>();
     }
 
     void Update()
@@ -38,6 +41,7 @@ public class ParkourController : MonoBehaviour
     private IEnumerator DoParkourAction()
     {
         inAction = true;
+        playerController.SetControl(false);
 
         // No hacemos un play porque queremos hacer una transicion de la animacion actual y la de stepUp
         animator.CrossFade("StepUp", 0.2f);
@@ -54,6 +58,7 @@ public class ParkourController : MonoBehaviour
 
         yield return new WaitForSeconds(animState.length);
 
+        playerController.SetControl(true);
         inAction = false;
     }
 }

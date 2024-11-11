@@ -26,8 +26,22 @@ public class PlayerController : MonoBehaviour
     private CharacterController characterController;
     private Animator animator;
     private Vector3 moveInput;
-    private Quaternion tarjetRotation;
+    private Quaternion targetRotation;
     private float ySpeed;
+
+    private bool hasControl = true;
+
+    public void SetControl(bool hasControl)
+    {
+        this.hasControl = hasControl;
+        characterController.enabled = hasControl;
+
+        if (!this.hasControl)
+        {
+            animator.SetFloat("MoveAmount", 0);
+            targetRotation = transform.rotation;
+        }
+    }
 
     private void Awake()
     {
@@ -47,6 +61,9 @@ public class PlayerController : MonoBehaviour
         float moveAmount = Mathf.Clamp01(Mathf.Abs(direction.x) + Mathf.Abs(direction.y));
         var moveDir = cameraController.GetYRotation() * moveInput;
 
+        if (!hasControl)
+            return;
+
         if (CheckGround())
         {
             // No lo podemos a cero para asegurarnos que el jugado siempre este en el suelo
@@ -65,10 +82,10 @@ public class PlayerController : MonoBehaviour
         if (moveAmount > 0f)
         {
             // para que mire en la direccion que mira el input
-            tarjetRotation = Quaternion.LookRotation(moveDir);
+            targetRotation = Quaternion.LookRotation(moveDir);
             // Para hacer una rotacion suave
             transform.rotation =
-                Quaternion.RotateTowards(transform.rotation, tarjetRotation, rotationSpeed * Time.deltaTime);
+                Quaternion.RotateTowards(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
         }
 
         // dampTime: 0.1f
