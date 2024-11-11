@@ -10,12 +10,15 @@ public class GatherInput : MonoBehaviour
     private PlayerInput playerInput;
     private InputAction lookAction;
     private InputAction moveAction;
+    private InputAction jumpAction;
     private Vector2 direction;
 
     [SerializeField] private float smoothTime = 4f;
 
     public Vector2 lookInput;
     public Vector2 smoothedDirection;
+    public bool tryToJump;
+
     public bool usingGamePad;
 
     private void Awake()
@@ -23,11 +26,13 @@ public class GatherInput : MonoBehaviour
         playerInput = GetComponent<PlayerInput>();
         lookAction = playerInput.actions["Look"];
         moveAction = playerInput.actions["Move"];
+        jumpAction = playerInput.actions["Jump"];
     }
 
     private void OnEnable()
     {
         lookAction.performed += ReadLookInput;
+        lookAction.canceled += CancelLookInput;
 
         // En el Input cuando los composive los valores o es 0 o 1, no interpola en el tiempo. Nos interesa esta funcionalidad para usuar en el Animator para pasa de los estados:
         // Idle, Walk, Run. Usaremos el método Update
@@ -35,12 +40,14 @@ public class GatherInput : MonoBehaviour
         // moveAction.performed += ReadDirection;
         // moveAction.canceled += ReadDirection;
 
-        lookAction.canceled += CancelLookInput;
+        jumpAction.performed += Jump;
+        jumpAction.canceled += OnJumpCanceled;
     }
 
     private void OnDisable()
     {
         lookAction.performed -= ReadLookInput;
+        lookAction.canceled -= CancelLookInput;
 
         // En el Input cuando los composive los valores o es 0 o 1 o -1, no interpola en el tiempo. Nos interesa esta funcionalidad para usuar en el Animator para pasa de los estados:
         // Idle, Walk, Run. Usaremos el método Update
@@ -48,7 +55,8 @@ public class GatherInput : MonoBehaviour
         // moveAction.performed -= ReadDirection;
         // moveAction.canceled -= ReadDirection;
 
-        lookAction.canceled -= CancelLookInput;
+        jumpAction.performed -= Jump;
+        jumpAction.canceled -= OnJumpCanceled;
     }
 
     private void Update()
@@ -74,6 +82,16 @@ public class GatherInput : MonoBehaviour
         // Si no leemos la posición del ratón sino su delta no cancelamos la acción y por tanto hay que comentar la siguiente linea
         //if (usingGamePad)
         lookInput = Vector2.zero;
+    }
+
+    private void Jump(InputAction.CallbackContext context)
+    {
+        tryToJump = context.ReadValueAsButton();
+    }
+
+    private void OnJumpCanceled(InputAction.CallbackContext context)
+    {
+        tryToJump = false;
     }
 
     // En el Input cuando los composive los valores o es 0 o 1, no interpola en el tiempo. Nos interesa esta funcionalidad para usuar en el Animator para pasa de los estados:
