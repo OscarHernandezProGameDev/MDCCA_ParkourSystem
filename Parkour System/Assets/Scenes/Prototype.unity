@@ -1227,6 +1227,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 71e85cc37e0aa484b865c0e12a6bf459, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gatherInput: {fileID: 1487575987}
 --- !u!1 &1487575984
 GameObject:
   m_ObjectHideFlags: 0
@@ -1306,6 +1307,7 @@ MonoBehaviour:
   smoothTime: 2
   lookInput: {x: 0, y: 0}
   smoothedDirection: {x: 0, y: 0}
+  tryToJump: 0
   usingGamePad: 0
 --- !u!1 &1589511884
 GameObject:
