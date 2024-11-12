@@ -65,7 +65,14 @@ public class ParkourController : MonoBehaviour
 
         //Debug.Log($"StepUp Duracion: {animState.length}");
 
-        yield return new WaitForSeconds(animState.length);
+        //yield return new WaitForSeconds(animState.length);
+
+        float time = 0f;
+        while (time < animState.length)
+        {
+            time += Time.deltaTime;
+            yield return null;
+        }
 
         playerController.SetControl(true);
         inAction = false;
