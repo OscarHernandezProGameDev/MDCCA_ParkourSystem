@@ -9,6 +9,7 @@ using UnityEngine;
 public class ParkourController : MonoBehaviour
 {
     [SerializeField] private GatherInput gatherInput;
+    [SerializeField] private List<ParkourAction> parkourActions;
 
     private EnvironmentScanner scanner;
     private Animator animator;
@@ -31,20 +32,25 @@ public class ParkourController : MonoBehaviour
 
             if (data.forwardHitFound)
             {
-                StartCoroutine(DoParkourAction());
+                foreach (var action in parkourActions)
+                    if (action.CheckIfPossible(data, transform))
+                    {
+                        StartCoroutine(DoParkourAction(action));
+                        break;
+                    }
             }
 
             gatherInput.tryToJump = false;
         }
     }
 
-    private IEnumerator DoParkourAction()
+    private IEnumerator DoParkourAction(ParkourAction action)
     {
         inAction = true;
         playerController.SetControl(false);
 
         // No hacemos un play porque queremos hacer una transicion de la animacion actual y la de stepUp
-        animator.CrossFade("StepUp", 0.2f);
+        animator.CrossFade(action.AnimName, 0.2f);
 
         // no se ejecutar hasta llegar a fin del frame
         yield return null;
@@ -54,7 +60,10 @@ public class ParkourController : MonoBehaviour
 
         var animState = animator.GetNextAnimatorStateInfo(0);
 
-        Debug.Log($"StepUp Duracion: {animState.length}");
+        if (!animState.IsName(action.AnimName))
+            Debug.Log("The Parkour animation is Wrong!");
+
+        //Debug.Log($"StepUp Duracion: {animState.length}");
 
         yield return new WaitForSeconds(animState.length);
 

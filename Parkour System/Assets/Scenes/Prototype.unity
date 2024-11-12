@@ -1228,6 +1228,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gatherInput: {fileID: 1487575987}
+  parkourActions:
+  - {fileID: 11400000, guid: de7587e318855e865a639e51b0e147ba, type: 2}
+  - {fileID: 11400000, guid: 1d377b66c7b35f9fda1caf9ad7851e7a, type: 2}
 --- !u!1 &1487575984
 GameObject:
   m_ObjectHideFlags: 0
