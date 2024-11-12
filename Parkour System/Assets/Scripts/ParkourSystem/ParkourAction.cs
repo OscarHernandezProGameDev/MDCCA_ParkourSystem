@@ -14,10 +14,26 @@ public class ParkourAction : ScriptableObject
     [SerializeField] private float maxHeight;
     [SerializeField] private bool rotateToObstacle;
 
-    public Quaternion TargetRotation { get; set; }
+    [Header("Target Matching")] [SerializeField]
+    private bool enabletargetMatching;
 
+    [SerializeField] private AvatarTarget matchBodyPart;
+
+    // Cuando en la animación empieza a despergar del suelo
+    [SerializeField] private float matchStartTime;
+
+    // Cuando en la animación pone el pie en la plataforma
+    [SerializeField] private float matchTargetTime;
+
+    public Quaternion TargetRotation { get; set; }
+    public Vector3 MatchingPosition { get; set; }
+    
     public string AnimName => animName;
     public bool RotateToObstacle => rotateToObstacle;
+    public bool EnableTargetMatching => enabletargetMatching;
+    public AvatarTarget MatchBodyPart => matchBodyPart;
+    public float MatchStartTime => matchStartTime;
+    public float MatchTargetTime => matchTargetTime;
 
     public bool CheckIfPossible(ObstacleHitData hitData, Transform player)
     {
@@ -28,6 +44,9 @@ public class ParkourAction : ScriptableObject
 
         if (rotateToObstacle)
             TargetRotation = Quaternion.LookRotation(-hitData.forwardHit.normal);
+        
+        if(enabletargetMatching)
+            MatchingPosition= hitData.heightHit.point;
 
         return true;
     }
