@@ -1191,12 +1191,12 @@ CharacterController:
   m_Enabled: 1
   serializedVersion: 3
   m_Height: 1.5
-  m_Radius: 0.15
+  m_Radius: 0.4
   m_SlopeLimit: 45
   m_StepOffset: 0.3
   m_SkinWidth: 0.015
   m_MinMoveDistance: 0.001
-  m_Center: {x: 0, y: 0.765, z: 0.03}
+  m_Center: {x: 0, y: 0.765, z: 0.26}
 --- !u!114 &1480652981
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1210,7 +1210,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   forwardOffset: {x: 0, y: 0.3, z: 0}
-  forwardRayLength: 1.2
+  forwardRayLength: 0.8
   heightRayLength: 5
   obstacleLayer:
     serializedVersion: 2

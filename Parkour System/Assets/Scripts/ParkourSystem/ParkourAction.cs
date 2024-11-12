@@ -15,7 +15,7 @@ public class ParkourAction : ScriptableObject
     [SerializeField] private bool rotateToObstacle;
 
     [Header("Target Matching")] [SerializeField]
-    private bool enabletargetMatching;
+    private bool enableTargetMatching = true;
 
     [SerializeField] private AvatarTarget matchBodyPart;
 
@@ -26,11 +26,11 @@ public class ParkourAction : ScriptableObject
     [SerializeField] private float matchTargetTime;
 
     public Quaternion TargetRotation { get; set; }
-    public Vector3 MatchingPosition { get; set; }
-    
+    public Vector3 MatchPosition { get; set; }
+
     public string AnimName => animName;
     public bool RotateToObstacle => rotateToObstacle;
-    public bool EnableTargetMatching => enabletargetMatching;
+    public bool EnableTargetMatching => enableTargetMatching;
     public AvatarTarget MatchBodyPart => matchBodyPart;
     public float MatchStartTime => matchStartTime;
     public float MatchTargetTime => matchTargetTime;
@@ -44,9 +44,9 @@ public class ParkourAction : ScriptableObject
 
         if (rotateToObstacle)
             TargetRotation = Quaternion.LookRotation(-hitData.forwardHit.normal);
-        
-        if(enabletargetMatching)
-            MatchingPosition= hitData.heightHit.point;
+
+        if (enableTargetMatching)
+            MatchPosition = hitData.heightHit.point;
 
         return true;
     }

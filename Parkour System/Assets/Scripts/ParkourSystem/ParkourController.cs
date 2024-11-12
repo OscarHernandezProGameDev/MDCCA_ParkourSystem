@@ -85,10 +85,10 @@ public class ParkourController : MonoBehaviour
     private void MatchTarget(ParkourAction action)
     {
         // solo hay que ejecutarlo una vez
-        if (animator.isMatchingTarget)
+        if (animator.isMatchingTarget || animator.IsInTransition(0))
             return;
 
-        animator.MatchTarget(action.MatchingPosition, transform.rotation, action.MatchBodyPart,
+        animator.MatchTarget(action.MatchPosition, transform.rotation, action.MatchBodyPart,
             new MatchTargetWeightMask(new Vector3(0, 1, 0), 0f), action.MatchStartTime, action.MatchTargetTime);
     }
 }
