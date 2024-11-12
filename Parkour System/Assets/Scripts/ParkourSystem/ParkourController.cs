@@ -63,14 +63,15 @@ public class ParkourController : MonoBehaviour
         if (!animState.IsName(action.AnimName))
             Debug.Log("The Parkour animation is Wrong!");
 
-        //Debug.Log($"StepUp Duracion: {animState.length}");
-
-        //yield return new WaitForSeconds(animState.length);
-
         float time = 0f;
         while (time < animState.length)
         {
             time += Time.deltaTime;
+
+            if (action.RotateToObstacle)
+                transform.rotation = Quaternion.RotateTowards(transform.rotation, action.TargetRotation,
+                    playerController.RotationSpeed * Time.deltaTime);
+
             yield return null;
         }
 

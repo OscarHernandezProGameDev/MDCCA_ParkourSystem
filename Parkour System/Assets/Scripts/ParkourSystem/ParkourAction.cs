@@ -27,8 +27,7 @@ public class ParkourAction : ScriptableObject
             return false;
 
         if (rotateToObstacle)
-        {
-        }
+            TargetRotation = Quaternion.LookRotation(-hitData.forwardHit.normal);
 
         return true;
     }

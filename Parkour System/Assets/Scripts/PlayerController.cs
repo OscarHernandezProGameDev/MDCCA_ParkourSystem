@@ -31,6 +31,8 @@ public class PlayerController : MonoBehaviour
 
     private bool hasControl = true;
 
+    public float RotationSpeed => rotationSpeed;
+
     public void SetControl(bool hasControl)
     {
         this.hasControl = hasControl;
