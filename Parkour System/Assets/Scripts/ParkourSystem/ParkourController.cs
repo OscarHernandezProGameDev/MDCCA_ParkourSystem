@@ -78,6 +78,8 @@ public class ParkourController : MonoBehaviour
             yield return null;
         }
 
+        yield return new WaitForSeconds(action.PostActionDelay);
+
         playerController.SetControl(true);
         inAction = false;
     }
@@ -89,6 +91,6 @@ public class ParkourController : MonoBehaviour
             return;
 
         animator.MatchTarget(action.MatchPosition, transform.rotation, action.MatchBodyPart,
-            new MatchTargetWeightMask(new Vector3(0, 1, 1), 0f), action.MatchStartTime, action.MatchTargetTime);
+            new MatchTargetWeightMask(action.MatchPoseWeight, 0f), action.MatchStartTime, action.MatchTargetTime);
     }
 }
