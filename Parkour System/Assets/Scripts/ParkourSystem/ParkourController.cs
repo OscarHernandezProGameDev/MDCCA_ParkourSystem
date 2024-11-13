@@ -63,10 +63,10 @@ public class ParkourController : MonoBehaviour
         if (!animState.IsName(action.AnimName))
             Debug.Log("The Parkour animation is Wrong!");
 
-        float time = 0f;
-        while (time < animState.length)
+        float timer = 0f;
+        while (timer < animState.length)
         {
-            time += Time.deltaTime;
+            timer += Time.deltaTime;
 
             if (action.RotateToObstacle)
                 transform.rotation = Quaternion.RotateTowards(transform.rotation, action.TargetRotation,
@@ -74,6 +74,12 @@ public class ParkourController : MonoBehaviour
 
             if (action.EnableTargetMatching)
                 MatchTarget(action);
+
+            // Esta condición es para en el caso del VaultFence para que cuando vaya saltado la valla
+            // tome el control del characterController Para que actue la gravedad y no quede flotando en el aire 
+            // al final de la animación
+            if (animator.IsInTransition(0) && timer > 0.5f)
+                break;
 
             yield return null;
         }
