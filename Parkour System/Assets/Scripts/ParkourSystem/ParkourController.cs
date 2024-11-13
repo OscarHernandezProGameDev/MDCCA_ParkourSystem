@@ -89,6 +89,6 @@ public class ParkourController : MonoBehaviour
             return;
 
         animator.MatchTarget(action.MatchPosition, transform.rotation, action.MatchBodyPart,
-            new MatchTargetWeightMask(new Vector3(0, 1, 0), 0f), action.MatchStartTime, action.MatchTargetTime);
+            new MatchTargetWeightMask(new Vector3(0, 1, 1), 0f), action.MatchStartTime, action.MatchTargetTime);
     }
 }
