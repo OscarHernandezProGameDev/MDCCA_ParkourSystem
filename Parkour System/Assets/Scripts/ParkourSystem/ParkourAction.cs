@@ -27,6 +27,7 @@ public class ParkourAction : ScriptableObject
     // Cuando en la animación pone el pie en la plataforma
     [SerializeField] private float matchTargetTime;
     [SerializeField] private Vector3 matchPoseWeight = new Vector3(0, 1, 0);
+    [SerializeField] private Vector3 extraOffset;
 
     public Quaternion TargetRotation { get; set; }
     public Vector3 MatchPosition { get; set; }
@@ -56,7 +57,7 @@ public class ParkourAction : ScriptableObject
             TargetRotation = Quaternion.LookRotation(-hitData.forwardHit.normal);
 
         if (enableTargetMatching)
-            MatchPosition = hitData.heightHit.point;
+            MatchPosition = hitData.heightHit.point + extraOffset;
 
         return true;
     }

@@ -13,12 +13,14 @@ MonoBehaviour:
   m_Name: ClimbUp
   m_EditorClassIdentifier: 
   animName: ClimbUp
+  obstacleTag: 
   minHeight: 1.52
   maxHeight: 2.51
   rotateToObstacle: 1
-  postActionDelay: 0.4
-  matchPoseWeight: {x: 0, y: 1, z: 3}
+  postActionDelay: 0.5
   enableTargetMatching: 1
   matchBodyPart: 5
   matchStartTime: 0.085
   matchTargetTime: 0.32
+  matchPoseWeight: {x: 0, y: 1, z: 3}
+  extraOffset: {x: 0, y: 0, z: 0}
