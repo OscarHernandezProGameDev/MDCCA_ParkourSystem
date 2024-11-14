@@ -49,6 +49,7 @@ public class ParkourController : MonoBehaviour
         inAction = true;
         playerController.SetControl(false);
 
+        animator.SetBool("MirrorAction", action.Mirror);
         // No hacemos un play porque queremos hacer una transicion de la animacion actual y la de stepUp
         animator.CrossFade(action.AnimName, 0.2f);
 
