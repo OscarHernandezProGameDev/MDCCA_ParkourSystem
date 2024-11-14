@@ -8,13 +8,13 @@ using UnityEngine.Serialization;
 public class ParkourAction : ScriptableObject
 {
     [SerializeField] private string animName;
-    [SerializeField] private string obstacleTag;
 
     // Como mínimo tiene que ser como el valor del character controller step offset (si es menor de este valor el character controler lo entiende como una escalera)
     [SerializeField] private float minHeight;
     [SerializeField] private float maxHeight;
     [SerializeField] private bool rotateToObstacle;
     [SerializeField] private float postActionDelay;
+    [SerializeField] private Vector3 matchPoseWeight = new Vector3(0, 1, 0);
 
     [Header("Target Matching")] [SerializeField]
     private bool enableTargetMatching = true;
@@ -26,8 +26,6 @@ public class ParkourAction : ScriptableObject
 
     // Cuando en la animación pone el pie en la plataforma
     [SerializeField] private float matchTargetTime;
-    [SerializeField] private Vector3 matchPoseWeight = new Vector3(0, 1, 0);
-    [SerializeField] private Vector3 extraOffset;
 
     public Quaternion TargetRotation { get; set; }
     public Vector3 MatchPosition { get; set; }
@@ -41,13 +39,8 @@ public class ParkourAction : ScriptableObject
     public float MatchStartTime => matchStartTime;
     public float MatchTargetTime => matchTargetTime;
 
-    public bool CheckIfPossible(ObstacleHitData hitData, Transform player)
+    public virtual bool CheckIfPossible(ObstacleHitData hitData, Transform player)
     {
-        // Check tag
-        if (!string.IsNullOrEmpty(obstacleTag) && !hitData.forwardHit.transform.CompareTag(obstacleTag))
-            return false;
-
-        // Check Height
         float height = hitData.heightHit.point.y - player.position.y;
 
         if (height < minHeight || height > maxHeight)
@@ -57,7 +50,7 @@ public class ParkourAction : ScriptableObject
             TargetRotation = Quaternion.LookRotation(-hitData.forwardHit.normal);
 
         if (enableTargetMatching)
-            MatchPosition = hitData.heightHit.point + extraOffset;
+            MatchPosition = hitData.heightHit.point;
 
         return true;
     }
