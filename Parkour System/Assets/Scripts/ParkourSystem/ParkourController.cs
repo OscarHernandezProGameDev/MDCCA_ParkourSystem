@@ -10,6 +10,7 @@ public class ParkourController : MonoBehaviour
 {
     [SerializeField] private GatherInput gatherInput;
     [SerializeField] private List<ParkourAction> parkourActions;
+    [SerializeField] private ParkourAction jumpingDownAction;
 
     private EnvironmentScanner scanner;
     private Animator animator;
@@ -41,6 +42,12 @@ public class ParkourController : MonoBehaviour
             }
 
             gatherInput.tryToJump = false;
+        }
+
+        if (playerController.IsOnLedge && !inAction)
+        {
+            playerController.IsOnLedge = false;
+            StartCoroutine(DoParkourAction(jumpingDownAction));
         }
     }
 

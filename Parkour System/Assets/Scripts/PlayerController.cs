@@ -71,10 +71,16 @@ public class PlayerController : MonoBehaviour
         if (!hasControl)
             return;
 
-        if (CheckGround())
+        var velocity = Vector3.zero;
+        var isGrounded = CheckGround();
+
+        animator.SetBool("IsGrounded", isGrounded);
+
+        if (isGrounded)
         {
             // No lo podemos a cero para asegurarnos que el jugado siempre este en el suelo
             ySpeed = -1f;
+            velocity = moveDir * moveSpeed;
 
             IsOnLedge = environmentScanner.LedgeCheck(moveDir);
 
@@ -82,9 +88,11 @@ public class PlayerController : MonoBehaviour
                 Debug.Log("On Ledge");
         }
         else
+        {
+            velocity = transform.forward * moveSpeed / 2;
             ySpeed += Physics.gravity.y * Time.deltaTime;
+        }
 
-        var velocity = moveDir * moveSpeed;
 
         velocity.y = ySpeed;
 

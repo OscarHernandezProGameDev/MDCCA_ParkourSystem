@@ -1235,6 +1235,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 01750412b04c75d4290833bc20465c36, type: 2}
   - {fileID: 11400000, guid: 1d377b66c7b35f9fda1caf9ad7851e7a, type: 2}
   - {fileID: 11400000, guid: 37be43f08ec73644981d9a26f9a3ec50, type: 2}
+  jumpingDownAction: {fileID: 11400000, guid: 43480b11ff034544586cf28659c5eb7f, type: 2}
 --- !u!1 &1487575984
 GameObject:
   m_ObjectHideFlags: 0
