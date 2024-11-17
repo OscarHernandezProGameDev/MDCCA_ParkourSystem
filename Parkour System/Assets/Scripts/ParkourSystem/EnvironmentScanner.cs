@@ -41,6 +41,8 @@ public class EnvironmentScanner : MonoBehaviour
 
     public bool LedgeCheck(Vector3 moveDirection)
     {
+        var ledgeData = new LedgeHitData();
+
         if (moveDirection == Vector3.zero)
             return false;
 
@@ -54,13 +56,18 @@ public class EnvironmentScanner : MonoBehaviour
 
             var surfaceOriginal = transform.position + moveDirection - (new Vector3(0, 1, 0));
 
-            Physics.Raycast(surfaceOriginal, -moveDirection, out RaycastHit surfaceHit, 2, obstacleLayer); // )
+            if (Physics.Raycast(surfaceOriginal, -moveDirection, out RaycastHit surfaceHit, 2, obstacleLayer))
+            {
+                float height = transform.position.y - hit.point.y;
 
-            float height = transform.position.y - hit.point.y;
+                // Esta en un saliente
+                if (height > ledgeHeightThreshold)
+                {
+                    ledgeData.angle = Vector3.Angle(transform.position, surfaceHit.point.normalized);
 
-            // Esta en un saliente
-            if (height > ledgeHeightThreshold)
-                return true;
+                    return true;
+                }
+            }
         }
 
         return false;
@@ -73,5 +80,12 @@ public class EnvironmentScanner : MonoBehaviour
 
         public RaycastHit forwardHit;
         public RaycastHit heightHit;
+    }
+
+    public struct LedgeHitData // Salient
+    {
+        public float height;
+        public float angle;
+        public RaycastHit surfaceHit; // Saliente
     }
 }
