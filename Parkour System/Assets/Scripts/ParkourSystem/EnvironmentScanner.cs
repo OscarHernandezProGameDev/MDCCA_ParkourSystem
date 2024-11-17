@@ -52,6 +52,10 @@ public class EnvironmentScanner : MonoBehaviour
         {
             Debug.DrawRay(origin, Vector3.down * ledgeRayLength, Color.magenta);
 
+            var surfaceOriginal = transform.position + moveDirection - (new Vector3(0, 1, 0));
+
+            Physics.Raycast(surfaceOriginal, -moveDirection, out RaycastHit surfaceHit, 2, obstacleLayer); // )
+
             float height = transform.position.y - hit.point.y;
 
             // Esta en un saliente
