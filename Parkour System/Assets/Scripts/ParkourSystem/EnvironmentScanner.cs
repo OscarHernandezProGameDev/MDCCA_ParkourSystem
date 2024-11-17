@@ -8,7 +8,10 @@ public class EnvironmentScanner : MonoBehaviour
     [SerializeField] private Vector3 forwardOffset = new Vector3(0, 0.5f, 0);
     [SerializeField] private float forwardRayLength = 0.8f;
     [SerializeField] private float heightRayLength = 5f;
+    [SerializeField] private float ledgeRayLength = 10f;
     [SerializeField] private LayerMask obstacleLayer;
+    // Threshold = límite
+    [SerializeField] private float ledgeHeightThreshold = 0.75f;
 
     public ObstacleHitData ObstacleCkech()
     {
@@ -34,6 +37,26 @@ public class EnvironmentScanner : MonoBehaviour
         }
 
         return hitData;
+    }
+
+    public bool LedgeCheck(Vector3 moveDirection)
+    {
+        if (moveDirection == Vector3.zero)
+            return false;
+
+        var originOffset = 0.5f;
+        var origin = transform.position + moveDirection * originOffset;
+
+        if (Physics.Raycast(origin, Vector3.down, out RaycastHit hit, ledgeRayLength, obstacleLayer))
+        {
+            float height = transform.position.y - hit.point.y;
+
+            // Esta en un saliente
+            if (height > ledgeHeightThreshold)
+                return true;
+        }
+
+        return false;
     }
 
     public struct ObstacleHitData
