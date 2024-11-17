@@ -45,10 +45,13 @@ public class EnvironmentScanner : MonoBehaviour
             return false;
 
         var originOffset = 0.5f;
-        var origin = transform.position + moveDirection * originOffset;
+        // Como el rayo se lanza en los pies sumamos una unidad para arriba para no tener problemas con el rayo que atraviese el suelo
+        var origin = transform.position + moveDirection * originOffset + Vector3.up;
 
         if (Physics.Raycast(origin, Vector3.down, out RaycastHit hit, ledgeRayLength, obstacleLayer))
         {
+            Debug.DrawRay(origin, Vector3.down * ledgeRayLength, Color.magenta);
+
             float height = transform.position.y - hit.point.y;
 
             // Esta en un saliente

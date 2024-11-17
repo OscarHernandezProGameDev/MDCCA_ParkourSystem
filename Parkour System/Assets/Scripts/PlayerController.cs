@@ -16,13 +16,15 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private GatherInput gatherInput;
     [SerializeField] private float moveSpeed = 5f, rotationSpeed = 500f;
 
-    [Header("GroundCheck")] [SerializeField]
+    [Header("GroundCheck")]
+    [SerializeField]
     private float groundCheckRadius = 0.2f;
 
     [SerializeField] private Vector3 groundCheckOffset;
     [SerializeField] private LayerMask groundLayer;
 
     private CameraController cameraController;
+    private EnvironmentScanner environmentScanner;
     private CharacterController characterController;
     private Animator animator;
     private Vector3 moveInput;
@@ -32,6 +34,8 @@ public class PlayerController : MonoBehaviour
     private bool hasControl = true;
 
     public float RotationSpeed => rotationSpeed;
+
+    public bool IsOnLedge { get; set; }
 
     public void SetControl(bool hasControl)
     {
@@ -48,6 +52,7 @@ public class PlayerController : MonoBehaviour
     private void Awake()
     {
         cameraController = Camera.main.GetComponent<CameraController>();
+        environmentScanner = GetComponent<EnvironmentScanner>();
         animator = GetComponent<Animator>();
         characterController = GetComponent<CharacterController>();
 
@@ -70,6 +75,11 @@ public class PlayerController : MonoBehaviour
         {
             // No lo podemos a cero para asegurarnos que el jugado siempre este en el suelo
             ySpeed = -1f;
+
+            IsOnLedge = environmentScanner.LedgeCheck(moveDir);
+
+            if (IsOnLedge)
+                Debug.Log("On Ledge");
         }
         else
             ySpeed += Physics.gravity.y * Time.deltaTime;
