@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Serialization;
-
 using static EnvironmentScanner;
 
 /// <summary>
@@ -18,8 +17,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private GatherInput gatherInput;
     [SerializeField] private float moveSpeed = 5f, rotationSpeed = 500f;
 
-    [Header("GroundCheck")]
-    [SerializeField]
+    [Header("GroundCheck")] [SerializeField]
     private float groundCheckRadius = 0.2f;
 
     [SerializeField] private Vector3 groundCheckOffset;
@@ -98,6 +96,7 @@ public class PlayerController : MonoBehaviour
                 LedgeData = ledgeData;
                 LedgeMovement();
             }
+
             // dampTime: 0.1f
             // divimos por la moveSpeed(velocidad máxima del jugador) para normalizarlo
             // velocity.magnitude / moveSpeed o velocity.sqrMagnitude / (moveSpeed*moveSpeed), magnitude es un poco más costosa que sqlMagnitude
@@ -141,14 +140,24 @@ public class PlayerController : MonoBehaviour
 
     private void LedgeMovement()
     {
-        float angle = Vector3.Angle(LedgeData.surfaceHit.normal, desiredMoveDir);
+        float signedAngle = Vector3.SignedAngle(LedgeData.surfaceHit.normal, desiredMoveDir, Vector3.up);
+        float angle = Mathf.Abs(signedAngle);
 
         // no queremos que se mueva cuando se va fuera del saliente
-        if (angle < 90)
+        if (angle < 60)
         {
             velocity = Vector3.zero;
             // que no rote
             moveDir = Vector3.zero;
+        }
+        else if (angle < 90) // Cambiamos el <90 para que no haya problemas con los joystick
+        {
+            // Angle is between 60 and 90, so limit the velocity to horizontal direction
+            var left = Vector3.Cross(Vector3.up, LedgeData.surfaceHit.normal);
+            var dir = left * Mathf.Sign(signedAngle);
+            
+            velocity = velocity.magnitude * dir;
+            moveDir = dir;
         }
     }
 }
