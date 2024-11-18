@@ -119,9 +119,10 @@ public class PlayerController : MonoBehaviour
             // para que mire en la direccion que mira el input
             targetRotation = Quaternion.LookRotation(moveDir);
             // Para hacer una rotacion suave
-            transform.rotation =
-                Quaternion.RotateTowards(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
         }
+
+        transform.rotation =
+            Quaternion.RotateTowards(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
     }
 
     void OnDrawGizmosSelected()
@@ -143,19 +144,28 @@ public class PlayerController : MonoBehaviour
         float signedAngle = Vector3.SignedAngle(LedgeData.surfaceHit.normal, desiredMoveDir, Vector3.up);
         float angle = Mathf.Abs(signedAngle);
 
+        if (Vector3.Angle(desiredMoveDir, transform.forward) >= 80)
+        {
+            // Don't move but rotate
+            velocity = Vector3.zero;
+
+            return;
+        }
+
         // no queremos que se mueva cuando se va fuera del saliente
-        if (angle < 60)
+        // en vez de 60 ponemos 50 para que el jugado se mueve y no se quede quieto
+        if (angle < 50)
         {
             velocity = Vector3.zero;
             // que no rote
             moveDir = Vector3.zero;
         }
-        else if (angle < 90) // Cambiamos el <90 para que no haya problemas con los joystick
+        else if (angle < 50) // Cambiamos el <90 para que no haya problemas con los joystick
         {
             // Angle is between 60 and 90, so limit the velocity to horizontal direction
             var left = Vector3.Cross(Vector3.up, LedgeData.surfaceHit.normal);
             var dir = left * Mathf.Sign(signedAngle);
-            
+
             velocity = velocity.magnitude * dir;
             moveDir = dir;
         }
