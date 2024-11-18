@@ -90,13 +90,18 @@ public class PlayerController : MonoBehaviour
             ySpeed = -1f;
             velocity = desiredMoveDir * moveSpeed;
 
-            IsOnLedge = environmentScanner.LedgeCheck(desiredMoveDir, out LedgeData ledgeData);
+            // desiredMoveDir lo normalizamos para suaviar la curba dampTime
+            IsOnLedge = environmentScanner.LedgeCheck(desiredMoveDir.normalized, out LedgeData ledgeData);
 
             if (IsOnLedge)
             {
                 LedgeData = ledgeData;
                 LedgeMovement();
             }
+            // dampTime: 0.1f
+            // divimos por la moveSpeed(velocidad máxima del jugador) para normalizarlo
+            // velocity.magnitude / moveSpeed o velocity.sqrMagnitude / (moveSpeed*moveSpeed), magnitude es un poco más costosa que sqlMagnitude
+            animator.SetFloat("MoveAmount", velocity.sqrMagnitude / (moveSpeed * moveSpeed), 0.15f, Time.deltaTime);
         }
         else
         {
@@ -110,7 +115,7 @@ public class PlayerController : MonoBehaviour
         //transform.position += moveDir * moveSpeed * Time.deltaTime;
         characterController.Move(velocity * Time.deltaTime);
         // ya no usamos moveDir.sqrMagnitude porque tenemos la variable moveAmount
-        if (moveAmount > 0f)
+        if (moveAmount > 0f && moveDir.sqrMagnitude > 0.05f)
         {
             // para que mire en la direccion que mira el input
             targetRotation = Quaternion.LookRotation(moveDir);
@@ -118,9 +123,6 @@ public class PlayerController : MonoBehaviour
             transform.rotation =
                 Quaternion.RotateTowards(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
         }
-
-        // dampTime: 0.1f
-        animator.SetFloat("MoveAmount", moveAmount, 0.15f, Time.deltaTime);
     }
 
     void OnDrawGizmosSelected()
