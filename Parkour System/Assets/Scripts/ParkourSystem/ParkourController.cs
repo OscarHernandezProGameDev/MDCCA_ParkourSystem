@@ -39,19 +39,20 @@ public class ParkourController : MonoBehaviour
                         StartCoroutine(DoParkourAction(action));
                         break;
                     }
+                gatherInput.tryToJump = false;
             }
-
-            gatherInput.tryToJump = false;
         }
 
-        if (playerController.IsOnLedge && !inAction)
+        // También comprobamos que no haya un obstaculo de frente
+        // solo saltamos si pulsamos la accion de salto
+        if (playerController.IsOnLedge && !inAction && !data.forwardHitFound && gatherInput.tryToJump)
         {
             // Si esl anguilo entre el player y saliente es muy grande quiere decid que no salte 
-            // También comprobamos que no haya un obstaculo de frente
-            if (playerController.LedgeData.angle <= 50 && !data.forwardHitFound)
+            if (playerController.LedgeData.angle <= 50)
             {
                 playerController.IsOnLedge = false;
                 StartCoroutine(DoParkourAction(jumpingDownAction));
+                gatherInput.tryToJump = false;
             }
         }
     }

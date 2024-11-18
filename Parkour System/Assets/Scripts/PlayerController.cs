@@ -30,6 +30,9 @@ public class PlayerController : MonoBehaviour
     private CharacterController characterController;
     private Animator animator;
     private Vector3 moveInput;
+    private Vector3 desiredMoveDir;
+    private Vector3 moveDir;
+    private Vector3 velocity;
     private Quaternion targetRotation;
     private float ySpeed;
 
@@ -70,12 +73,13 @@ public class PlayerController : MonoBehaviour
         moveInput = new Vector3(direction.x, 0, direction.y);
 
         float moveAmount = Mathf.Clamp01(Mathf.Abs(direction.x) + Mathf.Abs(direction.y));
-        var moveDir = cameraController.GetYRotation() * moveInput;
+        desiredMoveDir = cameraController.GetYRotation() * moveInput;
+        moveDir = desiredMoveDir;
 
         if (!hasControl)
             return;
 
-        var velocity = Vector3.zero;
+        velocity = Vector3.zero;
         var isGrounded = CheckGround();
 
         animator.SetBool("IsGrounded", isGrounded);
@@ -84,13 +88,15 @@ public class PlayerController : MonoBehaviour
         {
             // No lo podemos a cero para asegurarnos que el jugado siempre este en el suelo
             ySpeed = -1f;
-            velocity = moveDir * moveSpeed;
+            velocity = desiredMoveDir * moveSpeed;
 
-            IsOnLedge = environmentScanner.LedgeCheck(moveDir, out LedgeData ledgeData);
-            LedgeData = ledgeData;
+            IsOnLedge = environmentScanner.LedgeCheck(desiredMoveDir, out LedgeData ledgeData);
 
             if (IsOnLedge)
-                Debug.Log("On Ledge");
+            {
+                LedgeData = ledgeData;
+                LedgeMovement();
+            }
         }
         else
         {
@@ -129,5 +135,18 @@ public class PlayerController : MonoBehaviour
             Physics.CheckSphere(transform.TransformPoint(groundCheckOffset), groundCheckRadius, groundLayer);
 
         return isGrounded;
+    }
+
+    private void LedgeMovement()
+    {
+        float angle = Vector3.Angle(LedgeData.surfaceHit.normal, desiredMoveDir);
+
+        // no queremos que se mueva cuando se va fuera del saliente
+        if (angle < 90)
+        {
+            velocity = Vector3.zero;
+            // que no rote
+            moveDir = Vector3.zero;
+        }
     }
 }
