@@ -27,10 +27,10 @@ public class ParkourController : MonoBehaviour
 
     void Update()
     {
+        var data = scanner.ObstacleCkech();
+
         if (gatherInput.tryToJump && !inAction)
         {
-            var data = scanner.ObstacleCkech();
-
             if (data.forwardHitFound)
             {
                 foreach (var action in parkourActions)
@@ -47,7 +47,8 @@ public class ParkourController : MonoBehaviour
         if (playerController.IsOnLedge && !inAction)
         {
             // Si esl anguilo entre el player y saliente es muy grande quiere decid que no salte 
-            if (playerController.LedgeData.angle <= 50)
+            // También comprobamos que no haya un obstaculo de frente
+            if (playerController.LedgeData.angle <= 50 && !data.forwardHitFound)
             {
                 playerController.IsOnLedge = false;
                 StartCoroutine(DoParkourAction(jumpingDownAction));
