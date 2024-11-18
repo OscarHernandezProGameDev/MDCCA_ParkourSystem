@@ -46,8 +46,12 @@ public class ParkourController : MonoBehaviour
 
         if (playerController.IsOnLedge && !inAction)
         {
-            playerController.IsOnLedge = false;
-            StartCoroutine(DoParkourAction(jumpingDownAction));
+            // Si esl anguilo entre el player y saliente es muy grande quiere decid que no salte 
+            if (playerController.LedgeData.angle <= 50)
+            {
+                playerController.IsOnLedge = false;
+                StartCoroutine(DoParkourAction(jumpingDownAction));
+            }
         }
     }
 

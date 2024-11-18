@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Serialization;
 
+using static EnvironmentScanner;
+
 /// <summary>
 /// https://docs.unity3d.com/es/2018.4/Manual/class-CharacterController.html. Para configurar los valores del CharacterController
 /// El radio del character controller y de la esfera que usamos para el GroundCheck tiene que ser iguales o muy iguales
@@ -36,6 +38,8 @@ public class PlayerController : MonoBehaviour
     public float RotationSpeed => rotationSpeed;
 
     public bool IsOnLedge { get; set; }
+
+    public LedgeData LedgeData { get; set; }
 
     public void SetControl(bool hasControl)
     {
@@ -82,7 +86,8 @@ public class PlayerController : MonoBehaviour
             ySpeed = -1f;
             velocity = moveDir * moveSpeed;
 
-            IsOnLedge = environmentScanner.LedgeCheck(moveDir);
+            IsOnLedge = environmentScanner.LedgeCheck(moveDir, out LedgeData ledgeData);
+            LedgeData = ledgeData;
 
             if (IsOnLedge)
                 Debug.Log("On Ledge");

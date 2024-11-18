@@ -39,9 +39,9 @@ public class EnvironmentScanner : MonoBehaviour
         return hitData;
     }
 
-    public bool LedgeCheck(Vector3 moveDirection)
+    public bool LedgeCheck(Vector3 moveDirection, out LedgeData ledgeData)
     {
-        var ledgeData = new LedgeHitData();
+        ledgeData = new LedgeData();
 
         if (moveDirection == Vector3.zero)
             return false;
@@ -64,6 +64,8 @@ public class EnvironmentScanner : MonoBehaviour
                 if (height > ledgeHeightThreshold)
                 {
                     ledgeData.angle = Vector3.Angle(transform.position, surfaceHit.point.normalized);
+                    ledgeData.height = height;
+                    ledgeData.surfaceHit = surfaceHit; // Salient
 
                     return true;
                 }
@@ -82,7 +84,7 @@ public class EnvironmentScanner : MonoBehaviour
         public RaycastHit heightHit;
     }
 
-    public struct LedgeHitData // Salient
+    public struct LedgeData // Salient
     {
         public float height;
         public float angle;
