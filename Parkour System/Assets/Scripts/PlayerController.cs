@@ -108,7 +108,6 @@ public class PlayerController : MonoBehaviour
             ySpeed += Physics.gravity.y * Time.deltaTime;
         }
 
-
         velocity.y = ySpeed;
 
         //transform.position += moveDir * moveSpeed * Time.deltaTime;

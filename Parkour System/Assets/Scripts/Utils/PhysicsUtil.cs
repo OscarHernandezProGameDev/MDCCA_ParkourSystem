@@ -20,9 +20,9 @@ public class PhysicsUtil
 
         if (hitFound && debugDraw)
         {
-            Debug.DrawLine(origin, centerHit.point, Color.red);
-            Debug.DrawLine(origin - transform.right * spacing, leftHit.point, Color.red);
-            Debug.DrawLine(origin + transform.right * spacing, rightHit.point, Color.red);
+            Debug.DrawLine(origin, centerHit.point, Color.magenta);
+            Debug.DrawLine(origin - transform.right * spacing, leftHit.point, Color.magenta);
+            Debug.DrawLine(origin + transform.right * spacing, rightHit.point, Color.magenta);
         }
 
         return hitFound;
