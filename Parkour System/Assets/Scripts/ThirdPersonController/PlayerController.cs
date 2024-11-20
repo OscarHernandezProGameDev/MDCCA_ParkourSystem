@@ -159,7 +159,7 @@ public class PlayerController : MonoBehaviour
         if (angle < 50)
         {
             velocity = Vector3.zero;
-            // que no rote
+            // que no rote en los salientes
             moveDir = Vector3.zero;
         }
         else if (angle < 50) // Cambiamos el <90 para que no haya problemas con los joystick
