@@ -14,6 +14,7 @@ public class EnvironmentScanner : MonoBehaviour
     [SerializeField] private LayerMask obstacleLayer;
     // Threshold = límite
     [SerializeField] private float ledgeHeightThreshold = 0.75f;
+    [SerializeField] private float ledgeSpacing = 0.25f;
 
     public ObstacleHitData ObstacleCkech()
     {
@@ -54,24 +55,30 @@ public class EnvironmentScanner : MonoBehaviour
         // Como el rayo se lanza en los pies sumamos una unidad para arriba para no tener problemas con el rayo que atraviese el suelo
         var origin = transform.position + moveDirection * originOffset + Vector3.up;
 
-        if (PhysicsUtil.ThreeRayCast(origin, Vector3.down, 0.25f, transform, out List<RaycastHit> hits, ledgeRayLength, obstacleLayer, true))
+        if (PhysicsUtil.ThreeRayCast(origin, Vector3.down, ledgeSpacing, transform, out List<RaycastHit> hits, ledgeRayLength, obstacleLayer, true))
         {
+            foreach (var hit in hits)
+                if (transform.position.y - hit.point.y > ledgeHeightThreshold)
+                    Debug.Log($"height2: {transform.position.y - hit.point.y}");
+
             foreach (var hit in hits)
             {
                 // Esta en un saliente
                 if (transform.position.y - hit.point.y > ledgeHeightThreshold)
                 {
                     //var surfaceOriginal = transform.position + moveDirection - (new Vector3(0, 1, 0));
-                    var surfaceOriginal = hit.point;
+                    var surfaceOrigin = hit.point;
                     // para que este por dejado del pie del jugador
-                    surfaceOriginal.y = transform.position.y - 0.1f; // Salie
+                    surfaceOrigin.y = transform.position.y - 0.1f; // Salie
 
-                    if (Physics.Raycast(surfaceOriginal, transform.position - surfaceOriginal, out RaycastHit surfaceHit, 2, obstacleLayer))
+                    if (Physics.Raycast(surfaceOrigin, transform.position - surfaceOrigin, out RaycastHit surfaceHit, 2, obstacleLayer))
                     {
-                        Debug.DrawLine(surfaceOriginal, transform.position, Color.cyan);
+                        Debug.DrawLine(surfaceOrigin, transform.position, Color.cyan);
                         float height = transform.position.y - hit.point.y;
 
-                        ledgeData.angle = Vector3.Angle(transform.position, surfaceHit.normal);
+                        Debug.Log($"height: {height}");
+
+                        ledgeData.angle = Vector3.Angle(transform.forward, surfaceHit.normal);
                         ledgeData.height = height;
                         ledgeData.surfaceHit = surfaceHit; // Salient
 

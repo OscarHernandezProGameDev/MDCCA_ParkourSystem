@@ -11,6 +11,7 @@ public class ParkourController : MonoBehaviour
     [SerializeField] private GatherInput gatherInput;
     [SerializeField] private List<ParkourAction> parkourActions;
     [SerializeField] private ParkourAction jumpingDownAction;
+    [SerializeField] private float autoJumpHeightLimit = 1f;
 
     private EnvironmentScanner scanner;
     private Animator animator;
@@ -45,14 +46,20 @@ public class ParkourController : MonoBehaviour
 
         // También comprobamos que no haya un obstaculo de frente
         // solo saltamos si pulsamos la accion de salto
-        if (playerController.IsOnLedge && !inAction && !data.forwardHitFound && gatherInput.tryToJump)
+        if (playerController.IsOnLedge && !inAction && !data.forwardHitFound)
         {
+            bool shouldJump = true;
+
+            if (playerController.LedgeData.height > autoJumpHeightLimit && !gatherInput.tryToJump)
+                shouldJump = false;
+
             // Si esl anguilo entre el player y saliente es muy grande quiere decid que no salte 
-            if (playerController.LedgeData.angle <= 50)
+            if (shouldJump && playerController.LedgeData.angle <= 50)
             {
                 playerController.IsOnLedge = false;
                 StartCoroutine(DoParkourAction(jumpingDownAction));
-                gatherInput.tryToJump = false;
+                if (gatherInput.tryToJump)
+                    gatherInput.tryToJump = false;
             }
         }
     }
