@@ -57,37 +57,50 @@ public class EnvironmentScanner : MonoBehaviour
 
         if (PhysicsUtil.ThreeRayCast(origin, Vector3.down, ledgeSpacing, transform, out List<RaycastHit> hits, ledgeRayLength, obstacleLayer, true))
         {
-            foreach (var hit in hits)
-                if (transform.position.y - hit.point.y > ledgeHeightThreshold)
-                    Debug.Log($"height2: {transform.position.y - hit.point.y}");
+            RaycastHit hitMin = default;
+            float heightMin = int.MaxValue;
+            bool found = false;
 
             foreach (var hit in hits)
             {
+                var height = transform.position.y - hit.point.y; // Sal
+
                 // Esta en un saliente
-                if (transform.position.y - hit.point.y > ledgeHeightThreshold)
+                if (height > ledgeHeightThreshold)
                 {
-                    //var surfaceOriginal = transform.position + moveDirection - (new Vector3(0, 1, 0));
-                    var surfaceOrigin = hit.point;
-                    // para que este por dejado del pie del jugador
-                    surfaceOrigin.y = transform.position.y - 0.1f; // Salie
-
-                    if (Physics.Raycast(surfaceOrigin, transform.position - surfaceOrigin, out RaycastHit surfaceHit, 2, obstacleLayer))
+                    // es menor que el anterior
+                    if (height < heightMin)
                     {
-                        Debug.DrawLine(surfaceOrigin, transform.position, Color.cyan);
-                        float height = transform.position.y - hit.point.y;
-
-                        Debug.Log($"height: {height}");
-
-                        ledgeData.angle = Vector3.Angle(transform.forward, surfaceHit.normal);
-                        ledgeData.height = height;
-                        ledgeData.surfaceHit = surfaceHit; // Salient
-
-                        return true;
+                        heightMin = height;
+                        Debug.Log($"height2: {height}");
+                        hitMin = hit;
+                        if (!found)
+                            found = true; // Encontrad
                     }
-
-                    break;
                 }
             }
+            if (found) // Encontrad)
+            {
+                //var surfaceOriginal = transform.position + moveDirection - (new Vector3(0, 1, 0));
+                var surfaceOrigin = hitMin.point;
+                // para que este por dejado del pie del jugador
+                surfaceOrigin.y = transform.position.y - 0.1f; // Salie
+
+                if (Physics.Raycast(surfaceOrigin, transform.position - surfaceOrigin, out RaycastHit surfaceHit, 2, obstacleLayer))
+                {
+                    Debug.DrawLine(surfaceOrigin, transform.position, Color.cyan);
+                    float height = heightMin;
+
+                    Debug.Log($"height: {height}");
+
+                    ledgeData.angle = Vector3.Angle(transform.forward, surfaceHit.normal);
+                    ledgeData.height = height;
+                    ledgeData.surfaceHit = surfaceHit; // Salient
+
+                    return true;
+                }
+            }
+
         }
 
         return false;

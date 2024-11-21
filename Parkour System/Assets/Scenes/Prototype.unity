@@ -1318,7 +1318,7 @@ MonoBehaviour:
   forwardRayLength: 1.2
   heightRayLength: 5
   ledgeRayLength: 10
-  originOffset: 0.65
+  originOffset: 0.5
   obstacleLayer:
     serializedVersion: 2
     m_Bits: 8
