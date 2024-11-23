@@ -44,6 +44,7 @@ public class PlayerController : MonoBehaviour
     public LedgeData LedgeData { get; set; }
 
     public bool HasControl { get => hasControl; set => hasControl = value; }
+    public bool InAction { get; private set; }
 
     public void SetControl(bool hasControl)
     {
@@ -141,6 +142,61 @@ public class PlayerController : MonoBehaviour
         return isGrounded;
     }
 
+    private IEnumerator DoAction(string animName, MatchTargetParams matchParams, Quaternion targetRotation, bool rotate = false, float postDelay = 0f, bool mirror = false)
+    {
+        InAction = true;
+
+        animator.SetBool("MirrorAction", mirror);
+        // No hacemos un play porque queremos hacer una transicion de la animacion actual y la de stepUp
+        //animator.CrossFade(action.AnimName, 0.2f);
+        animator.CrossFadeInFixedTime(animName, 0.2f);
+
+        // no se ejecutar hasta llegar a fin del frame
+        yield return null;
+
+        // vamos a obtener la duracion de la animacion stepUp. Para ello usaremos GetNextAnimatorStateInfo y no
+        // GetCurrentAnimatorStateInfo porque esta la transcion de la animacion actual y la de stepUp
+
+        var animState = animator.GetNextAnimatorStateInfo(0);
+
+        if (!animState.IsName(animName))
+            Debug.Log("The Parkour animation is Wrong!");
+
+        float timer = 0f;
+        while (timer < animState.length)
+        {
+            timer += Time.deltaTime;
+
+            if (rotate)
+                transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
+
+            if (matchParams != null)
+                MatchTarget(matchParams);
+
+            // Esta condición es para en el caso del VaultFence para que cuando vaya saltado la valla
+            // tome el control del characterController Para que actue la gravedad y no quede flotando en el aire 
+            // al final de la animación
+            if (animator.IsInTransition(0) && timer > 0.5f)
+                break;
+
+            yield return null;
+        }
+
+        yield return new WaitForSeconds(postDelay);
+
+        InAction = false;
+    }
+
+    private void MatchTarget(MatchTargetParams mtp)
+    {
+        // solo hay que ejecutarlo una vez
+        if (animator.isMatchingTarget || animator.IsInTransition(0))
+            return;
+
+        animator.MatchTarget(mtp.pos, transform.rotation, mtp.bodyPart,
+            new MatchTargetWeightMask(mtp.posWeight, 0f), mtp.startTime, mtp.targetTime);
+    }
+
     private void LedgeMovement()
     {
         float signedAngle = Vector3.SignedAngle(LedgeData.surfaceHit.normal, desiredMoveDir, Vector3.up);
@@ -172,4 +228,13 @@ public class PlayerController : MonoBehaviour
             moveDir = dir;
         }
     }
+}
+
+public class MatchTargetParams
+{
+    public Vector3 pos;
+    public AvatarTarget bodyPart;
+    public Vector3 posWeight;
+    public float startTime;
+    public float targetTime;
 }
