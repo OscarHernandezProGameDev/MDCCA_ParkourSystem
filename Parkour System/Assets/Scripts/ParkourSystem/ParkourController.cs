@@ -17,8 +17,6 @@ public class ParkourController : MonoBehaviour
     private Animator animator;
     private PlayerController playerController;
 
-    private bool inAction;
-
     private void Awake()
     {
         scanner = GetComponent<EnvironmentScanner>();
@@ -30,7 +28,7 @@ public class ParkourController : MonoBehaviour
     {
         var data = scanner.ObstacleCkech();
 
-        if (gatherInput.tryToJump && !inAction)
+        if (gatherInput.tryToJump && !playerController.InAction)
         {
             if (data.forwardHitFound)
             {
@@ -46,7 +44,7 @@ public class ParkourController : MonoBehaviour
 
         // También comprobamos que no haya un obstaculo de frente
         // solo saltamos si pulsamos la accion de salto
-        if (playerController.IsOnLedge && !inAction && !data.forwardHitFound)
+        if (playerController.IsOnLedge && !playerController.InAction && !data.forwardHitFound)
         {
             bool shouldJump = true;
 
@@ -66,59 +64,24 @@ public class ParkourController : MonoBehaviour
 
     private IEnumerator DoParkourAction(ParkourAction action)
     {
-        inAction = true;
         playerController.SetControl(false);
 
-        animator.SetBool("MirrorAction", action.Mirror);
-        // No hacemos un play porque queremos hacer una transicion de la animacion actual y la de stepUp
-        //animator.CrossFade(action.AnimName, 0.2f);
-        animator.CrossFadeInFixedTime(action.AnimName, 0.2f);
+        MatchTargetParams matchParams = null;
 
-        // no se ejecutar hasta llegar a fin del frame
-        yield return null;
-
-        // vamos a obtener la duracion de la animacion stepUp. Para ello usaremos GetNextAnimatorStateInfo y no
-        // GetCurrentAnimatorStateInfo porque esta la transcion de la animacion actual y la de stepUp
-
-        var animState = animator.GetNextAnimatorStateInfo(0);
-
-        if (!animState.IsName(action.AnimName))
-            Debug.Log("The Parkour animation is Wrong!");
-
-        float timer = 0f;
-        while (timer < animState.length)
+        if (action.EnableTargetMatching)
         {
-            timer += Time.deltaTime;
-
-            if (action.RotateToObstacle)
-                transform.rotation = Quaternion.RotateTowards(transform.rotation, action.TargetRotation,
-                    playerController.RotationSpeed * Time.deltaTime);
-
-            if (action.EnableTargetMatching)
-                MatchTarget(action);
-
-            // Esta condición es para en el caso del VaultFence para que cuando vaya saltado la valla
-            // tome el control del characterController Para que actue la gravedad y no quede flotando en el aire 
-            // al final de la animación
-            if (animator.IsInTransition(0) && timer > 0.5f)
-                break;
-
-            yield return null;
+            matchParams = new MatchTargetParams
+            {
+                pos = action.MatchPosition,
+                bodyPart = action.MatchBodyPart,
+                posWeight = action.MatchPoseWeight,
+                startTime = action.MatchStartTime,
+                targetTime = action.MatchTargetTime
+            };
         }
 
-        yield return new WaitForSeconds(action.PostActionDelay);
+        yield return playerController.DoAction(action.AnimName, matchParams, action.TargetRotation, action.RotateToObstacle, action.PostActionDelay, action.Mirror);
 
         playerController.SetControl(true);
-        inAction = false;
-    }
-
-    private void MatchTarget(ParkourAction action)
-    {
-        // solo hay que ejecutarlo una vez
-        if (animator.isMatchingTarget || animator.IsInTransition(0))
-            return;
-
-        animator.MatchTarget(action.MatchPosition, transform.rotation, action.MatchBodyPart,
-            new MatchTargetWeightMask(action.MatchPoseWeight, 0f), action.MatchStartTime, action.MatchTargetTime);
     }
 }
