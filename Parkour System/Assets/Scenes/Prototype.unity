@@ -1211,7 +1211,7 @@ GameObject:
   - component: {fileID: 1354318611}
   - component: {fileID: 1354318610}
   - component: {fileID: 1354318609}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: ClimbLedge (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1318,6 +1318,7 @@ GameObject:
   - component: {fileID: 1480652981}
   - component: {fileID: 1480652979}
   - component: {fileID: 1480652980}
+  - component: {fileID: 1480652983}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -1354,7 +1355,7 @@ Transform:
   m_GameObject: {fileID: 1480652976}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 15.497, y: 0.132, z: -9.134}
+  m_LocalPosition: {x: 15.497, y: 0.132, z: -4.19}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1421,13 +1422,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   forwardOffset: {x: 0, y: 0.3, z: 0}
+  footToNeckHeight: 1
   forwardRayLength: 1.2
   heightRayLength: 5
   ledgeRayLength: 10
+  climbLedgeRayLength: 1.5
   originOffset: 0.5
   obstacleLayer:
     serializedVersion: 2
     m_Bits: 8
+  climbLedgeLayer:
+    serializedVersion: 2
+    m_Bits: 64
   ledgeHeightThreshold: 0.75
   ledgeSpacing: 0.25
 --- !u!114 &1480652982
@@ -1450,6 +1456,19 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 37be43f08ec73644981d9a26f9a3ec50, type: 2}
   jumpingDownAction: {fileID: 11400000, guid: 43480b11ff034544586cf28659c5eb7f, type: 2}
   autoJumpHeightLimit: 1
+--- !u!114 &1480652983
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1480652976}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eb3c07eac1383dc4ba82a6e5e03dea13, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gatherInput: {fileID: 1487575987}
 --- !u!1 &1487575984
 GameObject:
   m_ObjectHideFlags: 0
@@ -1543,7 +1562,7 @@ GameObject:
   - component: {fileID: 1588482632}
   - component: {fileID: 1588482631}
   - component: {fileID: 1588482630}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: ClimbLedge
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2020,7 +2039,7 @@ GameObject:
   - component: {fileID: 2146386166}
   - component: {fileID: 2146386165}
   - component: {fileID: 2146386164}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: ClimbLedge (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}

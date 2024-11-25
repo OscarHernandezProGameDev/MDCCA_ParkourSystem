@@ -138,7 +138,7 @@ public class PlayerController : MonoBehaviour
             velocity = desiredMoveDir * moveSpeed;
 
             // desiredMoveDir lo normalizamos para suaviar la curba dampTime
-            IsOnLedge = environmentScanner.LedgeCheck(desiredMoveDir.normalized, out LedgeData ledgeData);
+            IsOnLedge = environmentScanner.ObstacleLedgeCheck(desiredMoveDir.normalized, out LedgeData ledgeData);
 
             if (IsOnLedge)
             {

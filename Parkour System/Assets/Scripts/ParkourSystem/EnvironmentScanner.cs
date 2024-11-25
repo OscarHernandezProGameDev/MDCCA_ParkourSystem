@@ -6,12 +6,15 @@ using UnityEngine.Serialization;
 public class EnvironmentScanner : MonoBehaviour
 {
     [SerializeField] private Vector3 forwardOffset = new Vector3(0, 0.5f, 0);
+    [SerializeField] private float footToNeckHeight = 1f;
     [SerializeField] private float forwardRayLength = 0.8f;
     [SerializeField] private float heightRayLength = 5f;
     [SerializeField] private float ledgeRayLength = 10f;
+    [SerializeField] private float climbLedgeRayLength = 1.5f;
     // distancia para que no salga del saliente
     [SerializeField] private float originOffset = 0.65f;
     [SerializeField] private LayerMask obstacleLayer;
+    [SerializeField] private LayerMask climbLedgeLayer;
     // Threshold = límite
     [SerializeField] private float ledgeHeightThreshold = 0.75f;
     [SerializeField] private float ledgeSpacing = 0.25f;
@@ -21,9 +24,7 @@ public class EnvironmentScanner : MonoBehaviour
         var hitData = new ObstacleHitData();
         Vector3 forwardOrigin = transform.position + forwardOffset;
 
-        hitData.forwardHitFound = Physics.Raycast(forwardOrigin, transform.forward, out hitData.forwardHit,
-            forwardRayLength,
-            obstacleLayer);
+        hitData.forwardHitFound = Physics.Raycast(forwardOrigin, transform.forward, out hitData.forwardHit, forwardRayLength, obstacleLayer);
 
         Debug.DrawRay(forwardOrigin, transform.forward * forwardRayLength,
             hitData.forwardHitFound ? Color.green : Color.red);
@@ -42,7 +43,33 @@ public class EnvironmentScanner : MonoBehaviour
         return hitData;
     }
 
-    public bool LedgeCheck(Vector3 moveDirection, out LedgeData ledgeData)
+    public bool ClimbLedgeCheck(Vector3 direction, out RaycastHit ledgeHit)
+    {
+        ledgeHit = new RaycastHit(); // Por defaul
+
+        if (direction == Vector3.zero)
+            return false;
+
+        // el valor origin tiene que estar en la altura del cuello
+        var origin = transform.position + footToNeckHeight * Vector3.up;
+        // el saliente es 0,2, para que no se nos escape ningun saliente
+        var offset = new Vector3(0, 0.18f, 0);
+
+        for (int i = 0; i < 10; i++)
+        {
+            Debug.DrawRay(origin + offset * i, direction);
+            if (Physics.Raycast(origin + offset * i, direction, out RaycastHit hit, climbLedgeRayLength, climbLedgeLayer))
+            {
+                ledgeHit = hit;
+
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public bool ObstacleLedgeCheck(Vector3 moveDirection, out LedgeData ledgeData)
     {
         ledgeData = new LedgeData();
 
