@@ -45,6 +45,7 @@ public class PlayerController : MonoBehaviour
 
     public bool HasControl { get => hasControl; set => hasControl = value; }
     public bool InAction { get; private set; }
+    public bool IsHanging { get; set; }
 
     public void SetControl(bool hasControl)
     {
@@ -124,6 +125,9 @@ public class PlayerController : MonoBehaviour
         moveDir = desiredMoveDir;
 
         if (!hasControl)
+            return;
+
+        if (IsHanging)
             return;
 
         velocity = Vector3.zero;
