@@ -39,7 +39,7 @@ public class ClimbController : MonoBehaviour
     {
         var matchParams = new MatchTargetParams
         {
-            pos = ledge.position,
+            pos = GetHandPosition(ledge),
             bodyPart = AvatarTarget.RightHand,
             startTime = matchStartTime,
             targetTime = matchTargetTime,
@@ -51,5 +51,10 @@ public class ClimbController : MonoBehaviour
         yield return playerController.DoAction(anim, matchParams, targetRotation, true);
 
         playerController.IsHanging = true;
+    }
+
+    private Vector3 GetHandPosition(Transform ledge)
+    {
+        return ledge.position + ledge.forward * 0.05f + Vector3.up * 0.17f - ledge.right * 0.3f;
     }
 }
