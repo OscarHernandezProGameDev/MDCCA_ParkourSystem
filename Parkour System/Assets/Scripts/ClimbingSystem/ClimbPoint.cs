@@ -14,7 +14,9 @@ public class ClimbPoint : MonoBehaviour
 
         foreach (var neighbour in twoWayNeighbours)
         {
-            neighbour.point.CreateConnection(this, -neighbour.direction, neighbour.type, neighbour.isToWay);
+            if (neighbour.point != null)
+                if (!neighbour.point.HasConnectionTo(this))
+                    neighbour.point.CreateConnection(this, -neighbour.direction, neighbour.type, neighbour.isToWay);
         }
     }
 
@@ -31,12 +33,15 @@ public class ClimbPoint : MonoBehaviour
         neighbours.Add(neighbour);
     }
 
+    public bool HasConnectionTo(ClimbPoint point) => neighbours.Any(n => n.point == point);
+
     private void OnDrawGizmos()
     {
+        Debug.DrawRay(transform.position, transform.forward, Color.blue);
         foreach (var neighbour in neighbours)
         {
             if (neighbour.point != null)
-                Debug.DrawLine(transform.position, neighbour.point.transform.position, neighbour.isToWay ? Color.blue : Color.gray);
+                Debug.DrawLine(transform.position, neighbour.point.transform.position, neighbour.isToWay ? Color.green : Color.gray);
         }
     }
 }
