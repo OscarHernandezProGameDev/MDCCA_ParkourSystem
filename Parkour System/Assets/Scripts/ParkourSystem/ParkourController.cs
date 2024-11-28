@@ -28,7 +28,7 @@ public class ParkourController : MonoBehaviour
     {
         var data = scanner.ObstacleCkech();
 
-        if (gatherInput.tryToJump && !playerController.InAction)
+        if (gatherInput.tryToJump && !playerController.InAction && !playerController.IsHanging)
         {
             if (data.forwardHitFound)
             {
@@ -36,9 +36,9 @@ public class ParkourController : MonoBehaviour
                     if (action.CheckIfPossible(data, transform))
                     {
                         StartCoroutine(DoParkourAction(action));
+                        gatherInput.tryToJump = false;
                         break;
                     }
-                gatherInput.tryToJump = false;
             }
         }
 
