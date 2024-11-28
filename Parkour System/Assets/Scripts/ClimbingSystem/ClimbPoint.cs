@@ -33,6 +33,17 @@ public class ClimbPoint : MonoBehaviour
         neighbours.Add(neighbour);
     }
 
+    public Neighbour GetNeighbour(Vector2 direction)
+    {
+        if (direction.y != 0)
+            return neighbours.FirstOrDefault(n => n.direction.y == direction.y);
+
+        if (direction.x != 0)
+            return neighbours.FirstOrDefault(n => n.direction.x == direction.x);
+
+        return null;
+    }
+
     public bool HasConnectionTo(ClimbPoint point) => neighbours.Any(n => n.point == point);
 
     private void OnDrawGizmos()

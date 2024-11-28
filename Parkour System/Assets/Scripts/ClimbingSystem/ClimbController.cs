@@ -9,6 +9,8 @@ public class ClimbController : MonoBehaviour
     private EnvironmentScanner envScanner;
     private PlayerController playerController;
 
+    private ClimbPoint currentPoint;
+
     private void Awake()
     {
         envScanner = GetComponent<EnvironmentScanner>();
@@ -23,6 +25,7 @@ public class ClimbController : MonoBehaviour
             {
                 if (envScanner.ClimbLedgeCheck(transform.forward, out RaycastHit ledgeHit))
                 {
+                    currentPoint = ledgeHit.transform.GetComponent<ClimbPoint>();
                     playerController.SetControl(false);
                     StartCoroutine(JumpToLedge("IdleToHang", ledgeHit.transform, 0.41f, 0.54f));
                     gatherInput.tryToJump = false;
@@ -32,6 +35,23 @@ public class ClimbController : MonoBehaviour
         else
         {
             // Ledge to ledge
+            var h = Mathf.Round(gatherInput.Direction.x);
+            var v = Mathf.Round(gatherInput.Direction.y);
+            var inputDir = new Vector2(h, v);
+            var neighbour = currentPoint.GetNeighbour(inputDir);
+
+            if (neighbour == null)
+                return;
+
+            if (neighbour.type == ConnectionType.Jump && gatherInput.tryToJump && !playerController.InAction)
+            {
+                currentPoint = neighbour.point;
+
+                if (neighbour.direction.y == 1)
+                    StartCoroutine(JumpToLedge("HangHopUp", currentPoint.transform, 0.34f, 0.65f));
+                if (neighbour.direction.y == -1)
+                    StartCoroutine(JumpToLedge("HangHopDown", currentPoint.transform, 0.31f, 0.65f));
+            }
         }
     }
 

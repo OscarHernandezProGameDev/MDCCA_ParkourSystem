@@ -11,7 +11,7 @@ public class GatherInput : MonoBehaviour
     private InputAction lookAction;
     private InputAction moveAction;
     private InputAction jumpAction;
-    private Vector2 direction;
+    private Vector2 _direction;
 
     [SerializeField] private float smoothTime = 4f;
 
@@ -20,6 +20,8 @@ public class GatherInput : MonoBehaviour
     public bool tryToJump;
 
     public bool usingGamePad;
+
+    public Vector2 Direction => _direction;
 
     private void Awake()
     {
@@ -61,12 +63,12 @@ public class GatherInput : MonoBehaviour
 
     private void Update()
     {
-        direction = moveAction.ReadValue<Vector2>();
+        _direction = moveAction.ReadValue<Vector2>();
         // Para interpolar en el tiempo, no usamos Mathf.Lerp porque los a veces cuesta dar los valores iniciales o finales
         smoothedDirection = new Vector2
         (
-            Mathf.MoveTowards(smoothedDirection.x, direction.x, smoothTime * Time.deltaTime),
-            Mathf.MoveTowards(smoothedDirection.y, direction.y, smoothTime * Time.deltaTime)
+            Mathf.MoveTowards(smoothedDirection.x, _direction.x, smoothTime * Time.deltaTime),
+            Mathf.MoveTowards(smoothedDirection.y, _direction.y, smoothTime * Time.deltaTime)
         );
     }
 
