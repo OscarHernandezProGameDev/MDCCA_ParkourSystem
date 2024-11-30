@@ -66,6 +66,7 @@ public class PlayerController : MonoBehaviour
         animator.SetBool("MirrorAction", mirror);
         // No hacemos un play porque queremos hacer una transicion de la animacion actual y la de stepUp
         //animator.CrossFade(action.AnimName, 0.2f);
+        //cambiamos a CrossFadeInFixedTime para no tener problemas con las animaciones largas
         animator.CrossFadeInFixedTime(animName, 0.2f);
 
         // no se ejecutar hasta llegar a fin del frame

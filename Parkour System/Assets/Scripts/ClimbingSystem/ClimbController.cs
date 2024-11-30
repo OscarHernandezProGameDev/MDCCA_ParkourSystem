@@ -5,6 +5,12 @@ using UnityEngine;
 public class ClimbController : MonoBehaviour
 {
     [SerializeField] private GatherInput gatherInput;
+    // 0.3, 0.07, 0.1
+    [SerializeField] private Vector3 handOffsetUp = new Vector3(0.3f, 0.05f, 0.1f);
+    [SerializeField] private Vector3 handOffsetDown = new Vector3(0.3f, 0.05f, 0.1f);
+    [SerializeField] private Vector3 handOffsetLeft = new Vector3(0.3f, 0.05f, 0.1f);
+    [SerializeField] private Vector3 handOffsetRight = new Vector3(0.3f, 0.05f, 0.1f);
+
 
     private EnvironmentScanner envScanner;
     private PlayerController playerController;
@@ -53,31 +59,32 @@ public class ClimbController : MonoBehaviour
                 currentPoint = neighbour.point;
 
                 if (neighbour.direction.y == 1)
-                    StartCoroutine(JumpToLedge("HangHopUp", currentPoint.transform, 0.34f, 0.65f));
+                    StartCoroutine(JumpToLedge("HangHopUp", currentPoint.transform, 0.34f, 0.65f, handOffset: handOffsetUp));
                 else if (neighbour.direction.y == -1)
-                    StartCoroutine(JumpToLedge("HangDropDown", currentPoint.transform, 0.31f, 0.65f));
+                    StartCoroutine(JumpToLedge("HangDropDown", currentPoint.transform, 0.31f, 0.65f, handOffset: handOffsetDown));
                 else if (neighbour.direction.x == 1)
-                    StartCoroutine(JumpToLedge("HangHopRight", currentPoint.transform, 0.20f, 0.50f));
+                    StartCoroutine(JumpToLedge("HangHopRight", currentPoint.transform, 0.20f, 0.42f, handOffset: handOffsetRight));
                 else if (neighbour.direction.x == -1)
-                    StartCoroutine(JumpToLedge("HangHopLeft", currentPoint.transform, 0.20f, 0.50f));
+                    StartCoroutine(JumpToLedge("HangHopLeft", currentPoint.transform, 0.20f, 0.42f, handOffset: handOffsetLeft));
             }
             else if (neighbour.type == ConnectionType.Move)
             {
                 currentPoint = neighbour.point;
 
+                // 0.3, 0, 0.1
                 if (neighbour.direction.x == 1)
-                    StartCoroutine(JumpToLedge("ShimmyRight", currentPoint.transform, 0.0f, 0.38f));
+                    StartCoroutine(JumpToLedge("ShimmyRight", currentPoint.transform, 0.0f, 0.38f, handOffset: new Vector3(0.3f, 0.02f, 0.1f)));
                 else if (neighbour.direction.x == -1)
-                    StartCoroutine(JumpToLedge("ShimmyLeft", currentPoint.transform, 0.0f, 0.38f, AvatarTarget.LeftHand));
+                    StartCoroutine(JumpToLedge("ShimmyLeft", currentPoint.transform, 0.0f, 0.38f, AvatarTarget.LeftHand, handOffset: new Vector3(0.3f, 0.02f, 0.1f)));
             }
         }
     }
 
-    IEnumerator JumpToLedge(string anim, Transform ledge, float matchStartTime, float matchTargetTime, AvatarTarget hand = AvatarTarget.RightHand)
+    IEnumerator JumpToLedge(string anim, Transform ledge, float matchStartTime, float matchTargetTime, AvatarTarget hand = AvatarTarget.RightHand, Vector3? handOffset = null)
     {
         var matchParams = new MatchTargetParams
         {
-            pos = GetHandPosition(ledge, hand),
+            pos = GetHandPosition(ledge, hand, handOffset),
             bodyPart = hand,
             startTime = matchStartTime,
             targetTime = matchTargetTime,
@@ -91,10 +98,13 @@ public class ClimbController : MonoBehaviour
         playerController.IsHanging = true;
     }
 
-    private Vector3 GetHandPosition(Transform ledge, AvatarTarget hand)
+    private Vector3 GetHandPosition(Transform ledge, AvatarTarget hand, Vector3? handOffset)
     {
+        // 0.3, 0.07, 0.1
+        var offsetValue = (handOffset.HasValue) ? handOffset.Value : new Vector3(0.3f, 0.05f, 0.1f);
         var horizontalDir = hand == AvatarTarget.RightHand ? ledge.right : -ledge.right;
 
-        return ledge.position + ledge.forward * 0.05f + Vector3.up * 0.05f - horizontalDir * 0.3f;
+        //return ledge.position + ledge.forward * 0.05f + Vector3.up * 0.05f - horizontalDir * 0.3f;
+        return ledge.position + ledge.forward * offsetValue.z + Vector3.up * offsetValue.y - horizontalDir * offsetValue.x;
     }
 }
