@@ -61,15 +61,24 @@ public class ClimbController : MonoBehaviour
                 else if (neighbour.direction.x == -1)
                     StartCoroutine(JumpToLedge("HangHopLeft", currentPoint.transform, 0.20f, 0.50f));
             }
+            else if (neighbour.type == ConnectionType.Move)
+            {
+                currentPoint = neighbour.point;
+
+                if (neighbour.direction.x == 1)
+                    StartCoroutine(JumpToLedge("ShimmyRight", currentPoint.transform, 0.0f, 0.38f));
+                else if (neighbour.direction.x == -1)
+                    StartCoroutine(JumpToLedge("ShimmyLeft", currentPoint.transform, 0.0f, 0.38f, AvatarTarget.LeftHand));
+            }
         }
     }
 
-    IEnumerator JumpToLedge(string anim, Transform ledge, float matchStartTime, float matchTargetTime)
+    IEnumerator JumpToLedge(string anim, Transform ledge, float matchStartTime, float matchTargetTime, AvatarTarget hand = AvatarTarget.RightHand)
     {
         var matchParams = new MatchTargetParams
         {
-            pos = GetHandPosition(ledge),
-            bodyPart = AvatarTarget.RightHand,
+            pos = GetHandPosition(ledge, hand),
+            bodyPart = hand,
             startTime = matchStartTime,
             targetTime = matchTargetTime,
             posWeight = Vector3.one
@@ -82,8 +91,10 @@ public class ClimbController : MonoBehaviour
         playerController.IsHanging = true;
     }
 
-    private Vector3 GetHandPosition(Transform ledge)
+    private Vector3 GetHandPosition(Transform ledge, AvatarTarget hand)
     {
-        return ledge.position + ledge.forward * 0.05f + Vector3.up * 0.05f - ledge.right * 0.3f;
+        var horizontalDir = hand == AvatarTarget.RightHand ? ledge.right : -ledge.right;
+
+        return ledge.position + ledge.forward * 0.05f + Vector3.up * 0.05f - horizontalDir * 0.3f;
     }
 }
