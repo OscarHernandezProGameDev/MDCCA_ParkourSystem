@@ -5,12 +5,15 @@ using UnityEngine;
 public class ClimbController : MonoBehaviour
 {
     [SerializeField] private GatherInput gatherInput;
+    [Header("Offsets")]
+    [SerializeField] private Vector3 handOffsetIdleToHang = new Vector3(0.3f, 0.05f, 0.1f);
     // 0.3, 0.07, 0.1
-    [SerializeField] private Vector3 handOffsetUp = new Vector3(0.3f, 0.05f, 0.1f);
-    [SerializeField] private Vector3 handOffsetDown = new Vector3(0.3f, 0.05f, 0.1f);
-    [SerializeField] private Vector3 handOffsetLeft = new Vector3(0.3f, 0.05f, 0.1f);
-    [SerializeField] private Vector3 handOffsetRight = new Vector3(0.3f, 0.05f, 0.1f);
-
+    [SerializeField] private Vector3 handOffsetJumpUp = new Vector3(0.3f, 0.06f, 0.09f);
+    [SerializeField] private Vector3 handOffsetJumpDown = new Vector3(0.25f, 0.07f, 0.08f);
+    [SerializeField] private Vector3 handOffsetJumpLeft = new Vector3(0.37f, 0.06f, 0.01f);
+    [SerializeField] private Vector3 handOffsetJumpRight = new Vector3(0.34f, 0.06f, 0.05f);
+    [SerializeField] private Vector3 handOffsetShimmyLeft = new Vector3(0.3f, 0.02f, 0.1f);
+    [SerializeField] private Vector3 handOffsetShimmyRight = new Vector3(0.3f, 0.02f, 0.1f);
 
     private EnvironmentScanner envScanner;
     private PlayerController playerController;
@@ -33,7 +36,7 @@ public class ClimbController : MonoBehaviour
                 {
                     currentPoint = ledgeHit.transform.GetComponent<ClimbPoint>();
                     playerController.SetControl(false);
-                    StartCoroutine(JumpToLedge("IdleToHang", ledgeHit.transform, 0.41f, 0.54f));
+                    StartCoroutine(JumpToLedge("IdleToHang", ledgeHit.transform, 0.41f, 0.54f, handOffset: handOffsetIdleToHang));
                     gatherInput.tryToJump = false;
                 }
             }
@@ -59,13 +62,13 @@ public class ClimbController : MonoBehaviour
                 currentPoint = neighbour.point;
 
                 if (neighbour.direction.y == 1)
-                    StartCoroutine(JumpToLedge("HangHopUp", currentPoint.transform, 0.34f, 0.65f, handOffset: handOffsetUp));
+                    StartCoroutine(JumpToLedge("HangHopUp", currentPoint.transform, 0.34f, 0.65f, handOffset: handOffsetJumpUp));
                 else if (neighbour.direction.y == -1)
-                    StartCoroutine(JumpToLedge("HangDropDown", currentPoint.transform, 0.31f, 0.65f, handOffset: handOffsetDown));
+                    StartCoroutine(JumpToLedge("HangDropDown", currentPoint.transform, 0.31f, 0.65f, handOffset: handOffsetJumpDown));
                 else if (neighbour.direction.x == 1)
-                    StartCoroutine(JumpToLedge("HangHopRight", currentPoint.transform, 0.20f, 0.42f, handOffset: handOffsetRight));
+                    StartCoroutine(JumpToLedge("HangHopRight", currentPoint.transform, 0.20f, 0.42f, handOffset: handOffsetJumpRight));
                 else if (neighbour.direction.x == -1)
-                    StartCoroutine(JumpToLedge("HangHopLeft", currentPoint.transform, 0.20f, 0.42f, handOffset: handOffsetLeft));
+                    StartCoroutine(JumpToLedge("HangHopLeft", currentPoint.transform, 0.20f, 0.42f, handOffset: handOffsetJumpLeft));
             }
             else if (neighbour.type == ConnectionType.Move)
             {
@@ -73,9 +76,9 @@ public class ClimbController : MonoBehaviour
 
                 // 0.3, 0, 0.1
                 if (neighbour.direction.x == 1)
-                    StartCoroutine(JumpToLedge("ShimmyRight", currentPoint.transform, 0.0f, 0.38f, handOffset: new Vector3(0.3f, 0.02f, 0.1f)));
+                    StartCoroutine(JumpToLedge("ShimmyRight", currentPoint.transform, 0.0f, 0.38f, handOffset: handOffsetShimmyRight));
                 else if (neighbour.direction.x == -1)
-                    StartCoroutine(JumpToLedge("ShimmyLeft", currentPoint.transform, 0.0f, 0.38f, AvatarTarget.LeftHand, handOffset: new Vector3(0.3f, 0.02f, 0.1f)));
+                    StartCoroutine(JumpToLedge("ShimmyLeft", currentPoint.transform, 0.0f, 0.38f, AvatarTarget.LeftHand, handOffset: handOffsetShimmyLeft));
             }
         }
     }

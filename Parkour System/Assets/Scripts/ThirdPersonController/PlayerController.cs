@@ -80,12 +80,14 @@ public class PlayerController : MonoBehaviour
         if (!animState.IsName(animName))
             Debug.Log("The Parkour animation is Wrong!");
 
+        float rotateStartTime = matchParams != null ? matchParams.startTime : 0f;
         float timer = 0f;
         while (timer < animState.length)
         {
             timer += Time.deltaTime;
+            float normalizedTime = Mathf.Clamp01(timer / animState.length);
 
-            if (rotate)
+            if (rotate && normalizedTime > rotateStartTime)
                 transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
 
             if (matchParams != null)
