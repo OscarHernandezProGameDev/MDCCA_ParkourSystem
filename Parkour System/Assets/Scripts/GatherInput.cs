@@ -11,6 +11,7 @@ public class GatherInput : MonoBehaviour
     private InputAction lookAction;
     private InputAction moveAction;
     private InputAction jumpAction;
+    private InputAction dropAction;
     private Vector2 _direction;
 
     [SerializeField] private float smoothTime = 4f;
@@ -18,6 +19,7 @@ public class GatherInput : MonoBehaviour
     public Vector2 lookInput;
     public Vector2 smoothedDirection;
     public bool tryToJump;
+    public bool tryToDrop;
 
     public bool usingGamePad;
 
@@ -29,6 +31,7 @@ public class GatherInput : MonoBehaviour
         lookAction = playerInput.actions["Look"];
         moveAction = playerInput.actions["Move"];
         jumpAction = playerInput.actions["Jump"];
+        dropAction = playerInput.actions["Drop"];
     }
 
     private void OnEnable()
@@ -44,6 +47,9 @@ public class GatherInput : MonoBehaviour
 
         jumpAction.performed += Jump;
         jumpAction.canceled += OnJumpCanceled;
+
+        dropAction.performed += Drop;
+        dropAction.canceled += Drop;
     }
 
     private void OnDisable()
@@ -59,6 +65,9 @@ public class GatherInput : MonoBehaviour
 
         jumpAction.performed -= Jump;
         jumpAction.canceled -= OnJumpCanceled;
+
+        dropAction.performed -= Drop;
+        dropAction.canceled -= Drop;
     }
 
     private void Update()
@@ -88,12 +97,22 @@ public class GatherInput : MonoBehaviour
 
     private void Jump(InputAction.CallbackContext context)
     {
-        tryToJump = context.ReadValueAsButton();
+        tryToJump = true;
     }
 
     private void OnJumpCanceled(InputAction.CallbackContext context)
     {
         tryToJump = false;
+    }
+
+    private void Drop(InputAction.CallbackContext context)
+    {
+        tryToDrop = true;
+    }
+
+    private void OnDropCanceled(InputAction.CallbackContext context)
+    {
+        tryToDrop = false;
     }
 
     // En el Input cuando los composive los valores o es 0 o 1, no interpola en el tiempo. Nos interesa esta funcionalidad para usuar en el Animator para pasa de los estados:

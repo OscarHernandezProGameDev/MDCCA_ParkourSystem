@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -44,6 +45,13 @@ public class ClimbController : MonoBehaviour
         else
         {
             // Ledge to ledge
+            if (gatherInput.tryToDrop && !playerController.InAction)
+            {
+                StartCoroutine(JumpFroHang());
+                gatherInput.tryToDrop = false;
+
+                return;
+            }
 
             var h = Mathf.Round(gatherInput.Direction.x);
             var v = Mathf.Round(gatherInput.Direction.y);
@@ -69,6 +77,8 @@ public class ClimbController : MonoBehaviour
                     StartCoroutine(JumpToLedge("HangHopRight", currentPoint.transform, 0.20f, 0.42f, handOffset: handOffsetJumpRight));
                 else if (neighbour.direction.x == -1)
                     StartCoroutine(JumpToLedge("HangHopLeft", currentPoint.transform, 0.20f, 0.42f, handOffset: handOffsetJumpLeft));
+                // No resetamos para que el jugador pueda saltar de saliente en saliente sin soltar la tecla de salto
+                //gatherInput.tryToJump = false;
             }
             else if (neighbour.type == ConnectionType.Move)
             {
@@ -99,6 +109,14 @@ public class ClimbController : MonoBehaviour
         yield return playerController.DoAction(anim, matchParams, targetRotation, true);
 
         playerController.IsHanging = true;
+    }
+
+    private IEnumerator JumpFroHang()
+    {
+        playerController.IsHanging = false;
+        yield return playerController.DoAction("JumpFromHang");
+        playerController.ResetTargetRotation();
+        playerController.SetControl(true);
     }
 
     private Vector3 GetHandPosition(Transform ledge, AvatarTarget hand, Vector3? handOffset)

@@ -59,7 +59,9 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    public IEnumerator DoAction(string animName, MatchTargetParams matchParams, Quaternion targetRotation, bool rotate = false, float postDelay = 0f, bool mirror = false)
+    public void ResetTargetRotation() => targetRotation = transform.rotation;
+
+    public IEnumerator DoAction(string animName, MatchTargetParams matchParams = null, Quaternion targetRotation = new Quaternion(), bool rotate = false, float postDelay = 0f, bool mirror = false)
     {
         InAction = true;
 
