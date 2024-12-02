@@ -1958,6 +1958,7 @@ MonoBehaviour:
   lookInput: {x: 0, y: 0}
   smoothedDirection: {x: 0, y: 0}
   tryToJump: 0
+  tryToDrop: 0
   usingGamePad: 0
 --- !u!1001 &1544421187
 PrefabInstance:
@@ -1967,6 +1968,16 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 2056513677}
     m_Modifications:
+    - target: {fileID: 385192901926759387, guid: a1ca928190a8b6042b851826caa50264,
+        type: 3}
+      propertyPath: mountPoint
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1327695044275016330, guid: a1ca928190a8b6042b851826caa50264,
+        type: 3}
+      propertyPath: mountPoint
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2500615512012843961, guid: a1ca928190a8b6042b851826caa50264,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -2017,10 +2028,25 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3633426027329094336, guid: a1ca928190a8b6042b851826caa50264,
+        type: 3}
+      propertyPath: mountPoint
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4332083026845918124, guid: a1ca928190a8b6042b851826caa50264,
         type: 3}
       propertyPath: m_Name
       value: LongLedge_1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4817367063603824359, guid: a1ca928190a8b6042b851826caa50264,
+        type: 3}
+      propertyPath: mountPoint
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5809517360902330998, guid: a1ca928190a8b6042b851826caa50264,
+        type: 3}
+      propertyPath: mountPoint
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -2456,6 +2482,16 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 2056513677}
     m_Modifications:
+    - target: {fileID: 385192901926759387, guid: a1ca928190a8b6042b851826caa50264,
+        type: 3}
+      propertyPath: mountPoint
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1327695044275016330, guid: a1ca928190a8b6042b851826caa50264,
+        type: 3}
+      propertyPath: mountPoint
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1327695044275016330, guid: a1ca928190a8b6042b851826caa50264,
         type: 3}
       propertyPath: neighbours.Array.size
@@ -2526,10 +2562,25 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3633426027329094336, guid: a1ca928190a8b6042b851826caa50264,
+        type: 3}
+      propertyPath: mountPoint
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4332083026845918124, guid: a1ca928190a8b6042b851826caa50264,
         type: 3}
       propertyPath: m_Name
       value: LongLedge
+      objectReference: {fileID: 0}
+    - target: {fileID: 4817367063603824359, guid: a1ca928190a8b6042b851826caa50264,
+        type: 3}
+      propertyPath: mountPoint
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5809517360902330998, guid: a1ca928190a8b6042b851826caa50264,
+        type: 3}
+      propertyPath: mountPoint
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

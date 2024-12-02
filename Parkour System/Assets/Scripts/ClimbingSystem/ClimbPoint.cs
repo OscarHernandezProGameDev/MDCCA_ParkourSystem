@@ -6,19 +6,10 @@ using UnityEngine;
 
 public class ClimbPoint : MonoBehaviour
 {
+    [SerializeField] private bool mountPoint;
     [SerializeField] private List<Neighbour> neighbours;
 
-    private void Awake()
-    {
-        var twoWayNeighbours = neighbours.Where(n => n.isToWay);
-
-        foreach (var neighbour in twoWayNeighbours)
-        {
-            if (neighbour.point != null)
-                if (!neighbour.point.HasConnectionTo(this))
-                    neighbour.point.CreateConnection(this, -neighbour.direction, neighbour.type, neighbour.isToWay);
-        }
-    }
+    public bool MountPoint => mountPoint;
 
     public void CreateConnection(ClimbPoint point, Vector2 direction, ConnectionType type, bool isToWay = true)
     {
@@ -45,6 +36,18 @@ public class ClimbPoint : MonoBehaviour
     }
 
     public bool HasConnectionTo(ClimbPoint point) => neighbours.Any(n => n.point == point);
+
+    private void Awake()
+    {
+        var twoWayNeighbours = neighbours.Where(n => n.isToWay);
+
+        foreach (var neighbour in twoWayNeighbours)
+        {
+            if (neighbour.point != null)
+                if (!neighbour.point.HasConnectionTo(this))
+                    neighbour.point.CreateConnection(this, -neighbour.direction, neighbour.type, neighbour.isToWay);
+        }
+    }
 
     private void OnDrawGizmos()
     {

@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: de4048250b29e3f4da5cc3d3c7d1db04
+guid: d05a18fc8c250014994fa3ff8e112c0c
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
@@ -31,23 +31,23 @@ ModelImporter:
     extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
-      name: CrouchedToStand
+      name: BracedHangToCrouch
       takeName: mixamo.com
       internalID: -203655887218126122
-      firstFrame: 7
-      lastFrame: 15
+      firstFrame: 0
+      lastFrame: 34
       wrapMode: 0
       orientationOffsetY: 0
-      level: -0.06
+      level: -0.32
       cycleOffset: 0
       loop: 0
       hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
-      loopBlendOrientation: 1
-      loopBlendPositionY: 1
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
       loopBlendPositionXZ: 0
-      keepOriginalOrientation: 1
+      keepOriginalOrientation: 0
       keepOriginalPositionY: 0
       keepOriginalPositionXZ: 0
       heightFromFeet: 1

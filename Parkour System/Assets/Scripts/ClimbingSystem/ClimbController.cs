@@ -60,6 +60,13 @@ public class ClimbController : MonoBehaviour
             if (playerController.InAction || inputDir == Vector2.zero)
                 return;
 
+            if (currentPoint.MountPoint && inputDir.y == 1)
+            {
+                StartCoroutine(MountFromHang());
+
+                return;
+            }
+
             var neighbour = currentPoint.GetNeighbour(inputDir);
 
             if (neighbour == null)
@@ -115,6 +122,19 @@ public class ClimbController : MonoBehaviour
     {
         playerController.IsHanging = false;
         yield return playerController.DoAction("JumpFromHang");
+        playerController.ResetTargetRotation();
+        playerController.SetControl(true);
+    }
+
+    private IEnumerator MountFromHang()
+    {
+        playerController.IsHanging = false;
+        yield return playerController.DoAction("MountFromHang");
+
+        // Activamos el collide para que el jugador no se hunda en la plataforma
+        playerController.EnabledCharacterController(true);
+
+        yield return new WaitForSeconds(0.5f);
         playerController.ResetTargetRotation();
         playerController.SetControl(true);
     }

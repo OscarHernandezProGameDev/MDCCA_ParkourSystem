@@ -59,6 +59,8 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    public void EnabledCharacterController(bool enabled) => characterController.enabled = enabled;
+
     public void ResetTargetRotation() => targetRotation = transform.rotation;
 
     public IEnumerator DoAction(string animName, MatchTargetParams matchParams = null, Quaternion targetRotation = new Quaternion(), bool rotate = false, float postDelay = 0f, bool mirror = false)
