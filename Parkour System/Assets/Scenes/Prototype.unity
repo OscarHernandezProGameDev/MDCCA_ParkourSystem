@@ -1878,6 +1878,7 @@ MonoBehaviour:
   handOffsetJumpRight: {x: 0.34, y: 0.06, z: 0.05}
   handOffsetShimmyLeft: {x: 0.3, y: 0.02, z: 0.1}
   handOffsetShimmyRight: {x: 0.3, y: 0.02, z: 0.1}
+  handOffsetDropToHang: {x: 0.45, y: 0.085, z: -0.24}
 --- !u!1 &1487575984
 GameObject:
   m_ObjectHideFlags: 0

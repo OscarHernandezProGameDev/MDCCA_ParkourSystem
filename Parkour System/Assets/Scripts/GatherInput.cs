@@ -49,7 +49,7 @@ public class GatherInput : MonoBehaviour
         jumpAction.canceled += OnJumpCanceled;
 
         dropAction.performed += Drop;
-        dropAction.canceled += Drop;
+        dropAction.canceled += OnDropCanceled;
     }
 
     private void OnDisable()
@@ -67,7 +67,7 @@ public class GatherInput : MonoBehaviour
         jumpAction.canceled -= OnJumpCanceled;
 
         dropAction.performed -= Drop;
-        dropAction.canceled -= Drop;
+        dropAction.canceled -= OnDropCanceled;
     }
 
     private void Update()

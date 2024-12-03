@@ -15,6 +15,7 @@ public class ClimbController : MonoBehaviour
     [SerializeField] private Vector3 handOffsetJumpRight = new Vector3(0.34f, 0.06f, 0.05f);
     [SerializeField] private Vector3 handOffsetShimmyLeft = new Vector3(0.3f, 0.02f, 0.1f);
     [SerializeField] private Vector3 handOffsetShimmyRight = new Vector3(0.3f, 0.02f, 0.1f);
+    [SerializeField] private Vector3 handOffsetDropToHang = new Vector3(0.3f, 0.02f, 0.1f);
 
     private EnvironmentScanner envScanner;
     private PlayerController playerController;
@@ -35,9 +36,9 @@ public class ClimbController : MonoBehaviour
             {
                 if (envScanner.ClimbLedgeCheck(transform.forward, out RaycastHit ledgeHit))
                 {
-                    currentPoint = ledgeHit.transform.GetComponent<ClimbPoint>();
+                    currentPoint = GetNearestPoint(ledgeHit.transform, ledgeHit.point);
                     playerController.SetControl(false);
-                    StartCoroutine(JumpToLedge("IdleToHang", ledgeHit.transform, 0.41f, 0.54f, handOffset: handOffsetIdleToHang));
+                    StartCoroutine(JumpToLedge("IdleToHang", currentPoint.transform, 0.41f, 0.54f, handOffset: handOffsetIdleToHang));
                     gatherInput.tryToJump = false;
                 }
             }
@@ -46,7 +47,9 @@ public class ClimbController : MonoBehaviour
             {
                 if (envScanner.DropLedgeCheck(out RaycastHit ledgeHit))
                 {
-
+                    currentPoint = GetNearestPoint(ledgeHit.transform, ledgeHit.point);
+                    playerController.SetControl(false);
+                    StartCoroutine(JumpToLedge("DropToHang", currentPoint.transform, 0.30f, 0.45f, handOffset: handOffsetDropToHang));
                 }
             }
         }
@@ -155,5 +158,26 @@ public class ClimbController : MonoBehaviour
 
         //return ledge.position + ledge.forward * 0.05f + Vector3.up * 0.05f - horizontalDir * 0.3f;
         return ledge.position + ledge.forward * offsetValue.z + Vector3.up * offsetValue.y - horizontalDir * offsetValue.x;
+    }
+
+    private ClimbPoint GetNearestPoint(Transform ledge, Vector3 hitPoint)
+    {
+        var points = ledge.GetComponentsInChildren<ClimbPoint>();
+
+        ClimbPoint nearestPoint = null;
+        float nearestPointDistance = Mathf.Infinity;
+
+        foreach (var point in points)
+        {
+            var distance = Vector3.Distance(point.transform.position, hitPoint);
+
+            if (distance < nearestPointDistance)
+            {
+                nearestPoint = point;
+                nearestPointDistance = distance;
+            }
+        }
+
+        return nearestPoint;
     }
 }
