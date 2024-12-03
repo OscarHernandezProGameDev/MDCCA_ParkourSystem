@@ -41,13 +41,21 @@ public class ClimbController : MonoBehaviour
                     gatherInput.tryToJump = false;
                 }
             }
+
+            if (gatherInput.tryToDrop && !playerController.InAction)
+            {
+                if (envScanner.DropLedgeCheck(out RaycastHit ledgeHit))
+                {
+
+                }
+            }
         }
         else
         {
             // Ledge to ledge
             if (gatherInput.tryToDrop && !playerController.InAction)
             {
-                StartCoroutine(JumpFroHang());
+                StartCoroutine(JumpFromHang());
                 gatherInput.tryToDrop = false;
 
                 return;
@@ -118,7 +126,7 @@ public class ClimbController : MonoBehaviour
         playerController.IsHanging = true;
     }
 
-    private IEnumerator JumpFroHang()
+    private IEnumerator JumpFromHang()
     {
         playerController.IsHanging = false;
         yield return playerController.DoAction("JumpFromHang");
