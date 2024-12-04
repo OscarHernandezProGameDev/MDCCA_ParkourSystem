@@ -73,10 +73,10 @@ public class EnvironmentScanner : MonoBehaviour
     {
         ledgeHit = new RaycastHit(); // Por defaul
 
-        var origin = transform.position + Vector3.down * 0.1f + transform.forward * 2;
+        var origin = transform.position + Vector3.down * 0.1f + transform.forward * 0.2f;
 
-        Debug.DrawRay(origin, -transform.forward * 3, Color.green);
-        if (Physics.Raycast(origin, -transform.forward, out RaycastHit hit, 3, climbLedgeLayer))
+        Debug.DrawRay(origin, transform.forward, Color.red);
+        if (Physics.Raycast(origin, transform.forward, out RaycastHit hit, 0.8f, climbLedgeLayer))
         {
             ledgeHit = hit;
 

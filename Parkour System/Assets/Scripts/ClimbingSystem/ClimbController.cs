@@ -50,6 +50,7 @@ public class ClimbController : MonoBehaviour
                     currentPoint = GetNearestPoint(ledgeHit.transform, ledgeHit.point);
                     playerController.SetControl(false);
                     StartCoroutine(JumpToLedge("DropToHang", currentPoint.transform, 0.30f, 0.45f, handOffset: handOffsetDropToHang));
+                    gatherInput.tryToDrop = false;
                 }
             }
         }
