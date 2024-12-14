@@ -1,4 +1,6 @@
-ScansFactory/
+ScansFactory
+#ScansFactory/UrbanDistrict/Demo
+#ScansFactory/UrbanDistrict/Textures
 
 # This .gitignore file should be placed at the root of your Unity project directory
 #
