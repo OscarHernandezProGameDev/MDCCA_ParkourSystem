@@ -1,7 +1,28 @@
-ScansFactory
-#ScansFactory/UrbanDistrict/Demo
-#ScansFactory/UrbanDistrict/Textures
-#ScansFactory/UrbanDistrict/Sounds
+#ScansFactory
+Assets/ScansFactory/*.txt
+Assets/ScansFactory/*.txt.meta
+Assets/ScansFactory/UrbanDistrict/Decals.meta
+Assets/ScansFactory/UrbanDistrict/Demo.meta
+Assets/ScansFactory/UrbanDistrict/Materials.meta
+Assets/ScansFactory/UrbanDistrict/Meshes.meta
+#Assets/ScansFactory/UrbanDistrict/Prefabs.meta
+#Assets/ScansFactory/UrbanDistrict/Scripts.meta
+Assets/ScansFactory/UrbanDistrict/Shaders_URP.meta
+Assets/ScansFactory/UrbanDistrict/Sounds.meta
+Assets/ScansFactory/UrbanDistrict/Textures.meta
+Assets/ScansFactory/UrbanDistrict/TerrainData.meta
+Assets/ScansFactory/UrbanDistrict/Sounds.meta
+Assets/ScansFactory/UrbanDistrict/Decals/
+Assets/ScansFactory/UrbanDistrict/Demo/
+Assets/ScansFactory/UrbanDistrict/Materials/
+Assets/ScansFactory/UrbanDistrict/Meshes/
+#Assets/ScansFactory/UrbanDistrict/Prefabs/
+#Assets/ScansFactory/UrbanDistrict/Scripts/
+Assets/ScansFactory/UrbanDistrict/Shaders_URP/
+Assets/ScansFactory/UrbanDistrict/Sounds/
+Assets/ScansFactory/UrbanDistrict/TerrainData/
+Assets/ScansFactory/UrbanDistrict/Textures/
+Assets/ScansFactory/UrbanDistrict/Sounds/
 
 # Rhider directory work
 
