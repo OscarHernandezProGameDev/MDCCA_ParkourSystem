@@ -26,9 +26,11 @@ public class ParkourController : MonoBehaviour
 
     void Update()
     {
+        //Comprobamos si tenemos un obstáculo delante y de tenerlo, lo almacenamos en hitData
         var data = scanner.ObstacleCkech();
 
-        if (gatherInput.tryToJump && !playerController.InAction && !playerController.IsHanging)
+        //Si no estamos realizando una acción, ni estamos agarrados y pulsamos saltar...
+        if (gatherInput.tryToJump && !playerController.InAction && !playerController.IsHanging && playerController.IsGrounded)
         {
             if (data.forwardHitFound)
             {
@@ -44,7 +46,8 @@ public class ParkourController : MonoBehaviour
 
         // También comprobamos que no haya un obstaculo de frente
         // solo saltamos si pulsamos la accion de salto
-        if (playerController.IsOnLedge && !playerController.InAction && !data.forwardHitFound)
+        // Si el jugador está en un saliente, no está realizando ninguna acción y no detecta ningún obstáculo delante suyo...
+        if (playerController.IsOnLedge && !playerController.InAction && !data.forwardHitFound && playerController.IsGrounded)
         {
             bool shouldJump = true;
 

@@ -26,12 +26,40 @@ public class EnvironmentScanner : MonoBehaviour
 
         hitData.forwardHitFound = Physics.Raycast(forwardOrigin, transform.forward, out hitData.forwardHit, forwardRayLength, obstacleLayer);
 
-        Debug.DrawRay(forwardOrigin, transform.forward * forwardRayLength,
-            hitData.forwardHitFound ? Color.green : Color.red);
+        Debug.DrawRay(forwardOrigin, transform.forward * forwardRayLength, hitData.forwardHitFound ? Color.green : Color.red);
+
+        // Si no golpeamos con algo en la parte delantera
+        if (!hitData.forwardHitFound)
+        {
+            // Rango de angulo`para rayos adicionales
+            float angleStep = 10f; // angulo entre cada rayo
+            float maxAngle = 40f; // angulo maximo a la izquierda y a la derecha
+            int raysPerSide = (int)(maxAngle / angleStep); // Cantidad de rayos por lado
+
+            for (int i = -raysPerSide; i <= raysPerSide; i++)
+            {
+                // rayo centro no lo comprobamos porque es la primera comprobacion que se sido más arriba
+                if (i == 0)
+                    continue;
+
+                Vector3 direction = Quaternion.Euler(0, i * angleStep, 0) * transform.forward; // Rayo hacia la derecha o izquierda
+
+                Debug.DrawRay(forwardOrigin, direction * forwardRayLength, Color.yellow);
+
+                if (Physics.Raycast(forwardOrigin, direction, out var hit, forwardRayLength, obstacleLayer))
+                {
+                    hitData.forwardHitFound = true; // Si golpeamos con algo en la parte delantera, lo guardamos en hitDa
+                    hitData.forwardHit = hit;
+                    Debug.DrawRay(forwardOrigin, direction * forwardRayLength, Color.green);
+
+                    break;
+                }
+            }
+        }
 
         if (hitData.forwardHitFound)
         {
-            // *Añadido* Añadimos un desplazamiento minúsculo hacia adelante para asegurarnos 100% de que el rayo en altura choque con el obstáculo 
+            // Añadimos un desplazamiento minúsculo hacia adelante para asegurarnos 100% de que el rayo en altura choque con el obstáculo 
             Vector3 forwardOffset = transform.forward * 0.001f;
 
             // Definimos origen de raycast en altura

@@ -28,6 +28,8 @@ public class PlayerController : MonoBehaviour
     private EnvironmentScanner environmentScanner;
     private CharacterController characterController;
     private Animator animator;
+
+    private bool? _isGrounded;
     private Vector3 moveInput;
     private Vector3 desiredMoveDir;
     private Vector3 moveDir;
@@ -46,6 +48,7 @@ public class PlayerController : MonoBehaviour
     public bool HasControl { get => hasControl; set => hasControl = value; }
     public bool InAction { get; private set; }
     public bool IsHanging { get; set; }
+    public bool IsGrounded => _isGrounded ??= CheckGround();
 
     public void SetControl(bool hasControl)
     {
@@ -124,6 +127,7 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
+        _isGrounded = null;
         Vector2 direction = gatherInput.smoothedDirection;
         moveInput = new Vector3(direction.x, 0, direction.y);
 
@@ -138,7 +142,9 @@ public class PlayerController : MonoBehaviour
             return;
 
         velocity = Vector3.zero;
-        var isGrounded = CheckGround();
+        _isGrounded ??= CheckGround();
+
+        var isGrounded = _isGrounded.Value;
 
         animator.SetBool("IsGrounded", isGrounded);
 

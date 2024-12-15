@@ -30,10 +30,13 @@ public class ClimbController : MonoBehaviour
 
     void Update()
     {
+        // Si no estamos en estado "agarrado"...
         if (!playerController.IsHanging)
         {
-            if (gatherInput.tryToJump && !playerController.InAction)
+            // ...y pulsamos saltar y no estamos realizando otra acción...
+            if (gatherInput.tryToJump && !playerController.InAction && playerController.IsGrounded)
             {
+                // Mandamos a escanear en busca de salientes de escalada delante nuestro
                 if (envScanner.ClimbLedgeCheck(transform.forward, out RaycastHit ledgeHit))
                 {
                     currentPoint = GetNearestPoint(ledgeHit.transform, ledgeHit.point);
@@ -43,8 +46,10 @@ public class ClimbController : MonoBehaviour
                 }
             }
 
-            if (gatherInput.tryToDrop && !playerController.InAction)
+            // Si no estamos en estado "agarrado" y pulsamos soltar (drop) y no estamos realizando otra acción...
+            if (gatherInput.tryToDrop && !playerController.InAction && playerController.IsGrounded)
             {
+                // Escáneamos por busca de salientes por delante y debajo nuestro con DropLedgeCheck
                 if (envScanner.DropLedgeCheck(out RaycastHit ledgeHit))
                 {
                     currentPoint = GetNearestPoint(ledgeHit.transform, ledgeHit.point);
@@ -54,9 +59,10 @@ public class ClimbController : MonoBehaviour
                 }
             }
         }
-        else
+        else // Si estamos en estado "agarrado"...
         {
             // Ledge to ledge
+            // ...y pulsamos drop y no estamos realizando otra acción...
             if (gatherInput.tryToDrop && !playerController.InAction)
             {
                 StartCoroutine(JumpFromHang());
@@ -65,13 +71,17 @@ public class ClimbController : MonoBehaviour
                 return;
             }
 
+            // Obtenemos la dirección (en ejes separados) a la que el jugador pretende ir
             var h = Mathf.Round(gatherInput.Direction.x);
             var v = Mathf.Round(gatherInput.Direction.y);
+            // La almacenamos en un Vector2
             var inputDir = new Vector2(h, v);
 
+            // Si player está realizando una acción o inputDir es nulo(no pretende ir hacia ninguna dirección), devolvemos el método
             if (playerController.InAction || inputDir == Vector2.zero)
                 return;
 
+            // Si el ClimbPoint actual es un MountPoint y pulsamos dirección arriba, nos montamos encima del obstáculo
             if (currentPoint.MountPoint && inputDir.y == 1)
             {
                 StartCoroutine(MountFromHang());
@@ -79,15 +89,22 @@ public class ClimbController : MonoBehaviour
                 return;
             }
 
+            // Obtenemos el ClimbPOint más cercano hacia la dirección que pretendemos movernos y la almacenamos como "vecino"
             var neighbour = currentPoint.GetNeighbour(inputDir);
 
+            // Si no tenemos "vecinos" en esa dirección, devolvemos el método y no hacemos nada
             if (neighbour == null)
                 return;
 
+            // Si tenemos un vecino cuya conexión es 'Jump' y pulsamos saltar...
             if (neighbour.type == ConnectionType.Jump && gatherInput.tryToJump)
             {
+                //...Cambiamos el current Point con el ClimbPoint al que estamos a punto de cambiar
                 currentPoint = neighbour.point;
 
+                // Manejamos las direcciones disponibles... (en nuestro caso, 4 => Si contamos con las animaciones, podemos añadir
+                //direcciones extras aquí)
+                // ...y ejecutamos los saltos correspondientes según dirección
                 if (neighbour.direction.y == 1)
                     StartCoroutine(JumpToLedge("HangHopUp", currentPoint.transform, 0.34f, 0.65f, handOffset: handOffsetJumpUp));
                 else if (neighbour.direction.y == -1)
@@ -99,10 +116,11 @@ public class ClimbController : MonoBehaviour
                 // No resetamos para que el jugador pueda saltar de saliente en saliente sin soltar la tecla de salto
                 //gatherInput.tryToJump = false;
             }
-            else if (neighbour.type == ConnectionType.Move)
+            else if (neighbour.type == ConnectionType.Move) // Si tenemos un vecino cuya conexión es 'Move'...
             {
                 currentPoint = neighbour.point;
 
+                // ...y ejecutamos los movimientos correspondientes según dirección
                 // 0.3, 0, 0.1
                 if (neighbour.direction.x == 1)
                     StartCoroutine(JumpToLedge("ShimmyRight", currentPoint.transform, 0.0f, 0.38f, handOffset: handOffsetShimmyRight));
