@@ -31,7 +31,11 @@ public class EnvironmentScanner : MonoBehaviour
 
         if (hitData.forwardHitFound)
         {
-            var heightOrigin = hitData.forwardHit.point + Vector3.up * heightRayLength;
+            // *Añadido* Añadimos un desplazamiento minúsculo hacia adelante para asegurarnos 100% de que el rayo en altura choque con el obstáculo 
+            Vector3 forwardOffset = transform.forward * 0.001f;
+
+            // Definimos origen de raycast en altura
+            var heightOrigin = hitData.forwardHit.point + Vector3.up * heightRayLength + forwardOffset;
 
             hitData.heightHitFound = Physics.Raycast(heightOrigin, Vector3.down, out hitData.heightHit, heightRayLength,
                 obstacleLayer);

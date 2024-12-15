@@ -285,7 +285,7 @@ MonoBehaviour:
     enableIcons: 1
     showMissingScriptWarning: 1
     showAll: 3
-    stackMonoBehaviours: 0
+    stackMonoBehaviours: 1
     unityGroups:
     - name: Animation
       components:
