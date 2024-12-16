@@ -8,7 +8,7 @@ public class SlideAction : ParkourAction
     public override bool CheckIfPossible(EnvironmentScanner.ObstacleHitData hitData, Transform player)
     {
         // Check tag
-        if (!string.IsNullOrEmpty(obstacleTag) && !hitData.forwardHit.transform.CompareTag(obstacleTag))
+        if (!string.IsNullOrEmpty(obstacleTag) && !hitData.slideHit.transform.CompareTag(obstacleTag))
             return false;
 
         // Se puede añadir cualquier lógica adicional
