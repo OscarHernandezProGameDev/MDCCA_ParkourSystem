@@ -17,7 +17,7 @@ GameObject:
   - component: {fileID: 5000014494223227327}
   m_Layer: 0
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -77,6 +77,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 1d377b66c7b35f9fda1caf9ad7851e7a, type: 2}
   - {fileID: 11400000, guid: 37be43f08ec73644981d9a26f9a3ec50, type: 2}
   jumpingDownAction: {fileID: 11400000, guid: 43480b11ff034544586cf28659c5eb7f, type: 2}
+  slideAction: {fileID: 11400000, guid: 16815dc453e129345a3e0c36f71af061, type: 2}
   autoJumpHeightLimit: 1
 --- !u!114 &1053946998021441800
 MonoBehaviour:
@@ -94,17 +95,19 @@ MonoBehaviour:
   footToNeckHeight: 1
   forwardRayLength: 1.2
   heightRayLength: 5
-  ledgeRayLength: 20
-  climbLedgeRayLength: 1.5
-  originOffset: 0.5
   obstacleLayer:
     serializedVersion: 2
     m_Bits: 8
+  slideHeightRayOffsetY: 1
+  slideHeightRayLength: 1
+  ledgeRayLength: 20
+  climbLedgeRayLength: 1.5
+  originOffset: 0.5
+  ledgeHeightThreshold: 0.8
+  ledgeSpacing: 0.25
   climbLedgeLayer:
     serializedVersion: 2
     m_Bits: 64
-  ledgeHeightThreshold: 0.8
-  ledgeSpacing: 0.25
 --- !u!95 &1612581022753967191
 Animator:
   serializedVersion: 7

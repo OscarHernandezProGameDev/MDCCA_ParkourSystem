@@ -8,7 +8,7 @@ using UnityEngine.Serialization;
 public class ParkourAction : ScriptableObject
 {
     [SerializeField] private string animName;
-    [SerializeField] private string obstacleTag;
+    [SerializeField] private protected string obstacleTag;
 
     // Como mínimo tiene que ser como el valor del character controller step offset (si es menor de este valor el character controler lo entiende como una escalera)
     [SerializeField] private float minHeight;

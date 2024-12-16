@@ -4,6 +4,10 @@ using UnityEngine;
 
 public class PhysicsUtil
 {
+    // Este método 'ThreeRaycasts' lanza tres raycasts verticales desde el origen especificado, 
+    // hacia abajo y separados por una distancia determinada a la izquierda y a la derecha.
+    // Devuelve 'true' si alguno de los raycasts impacta con una superficie dentro de la distancia proporcionada.
+    // Los impactos se almacenan en la lista 'hits' y opcionalmente se dibujan líneas de depuración.
     // dir = Vector3.down
     public static bool ThreeRayCast(Vector3 origin, Vector3 dir, float spacing, Transform transform,
         out List<RaycastHit> hits, float distance, LayerMask layer, bool debugDraw = false)

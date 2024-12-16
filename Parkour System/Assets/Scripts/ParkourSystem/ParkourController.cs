@@ -11,6 +11,7 @@ public class ParkourController : MonoBehaviour
     [SerializeField] private GatherInput gatherInput;
     [SerializeField] private List<ParkourAction> parkourActions;
     [SerializeField] private ParkourAction jumpingDownAction;
+    [SerializeField] private ParkourAction slideAction;
     [SerializeField] private float autoJumpHeightLimit = 1f;
 
     private EnvironmentScanner scanner;
@@ -28,6 +29,15 @@ public class ParkourController : MonoBehaviour
     {
         //Comprobamos si tenemos un obstáculo delante y de tenerlo, lo almacenamos en hitData
         var data = scanner.ObstacleCkech();
+
+        if(data.canSlide && gatherInput.tryToJump && !playerController.InAction && !playerController.IsHanging && playerController.IsGrounded)
+        {
+            if (slideAction.CheckIfPossible(data, transform))
+            {
+                StartCoroutine(DoParkourAction(slideAction));
+                gatherInput.tryToJump = false;                
+            }
+        }
 
         //Si no estamos realizando una acción, ni estamos agarrados y pulsamos saltar...
         if (gatherInput.tryToJump && !playerController.InAction && !playerController.IsHanging && playerController.IsGrounded)

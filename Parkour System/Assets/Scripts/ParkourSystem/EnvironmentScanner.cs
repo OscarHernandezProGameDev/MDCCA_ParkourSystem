@@ -5,19 +5,39 @@ using UnityEngine.Serialization;
 
 public class EnvironmentScanner : MonoBehaviour
 {
-    [SerializeField] private Vector3 forwardOffset = new Vector3(0, 0.5f, 0);
-    [SerializeField] private float footToNeckHeight = 1f;
-    [SerializeField] private float forwardRayLength = 0.8f;
-    [SerializeField] private float heightRayLength = 5f;
-    [SerializeField] private float ledgeRayLength = 10f;
-    [SerializeField] private float climbLedgeRayLength = 1.5f;
+    [Header("Obstacules")]
+    // Desplazamiento para rayo delantero, ligeramente elevado 
+    [SerializeField, Tooltip("Desplazamiento para rayo delantero, ligeramente elevado")] private Vector3 forwardOffset = new Vector3(0, 0.5f, 0);
+    // altura del cuello
+    [SerializeField, Tooltip("altura del cuello")] private float footToNeckHeight = 1f;
+    // Longitud de raycast delantero (forward), usado para detectar obstáculos frente al jugador
+    [SerializeField, Tooltip("Longitud de raycast delantero (forward), usado para detectar obstáculos frente al jugador")] private float forwardRayLength = 0.8f;
+    // Longitud del raycast vertical(hacia abajo) para medir la altura de un obstáculo
+    [SerializeField, Tooltip("Longitud del raycast vertical(hacia abajo) para medir la altura de un obstáculo")] private float heightRayLength = 5f;
+    // Layer de obstáculos
+    [SerializeField, Tooltip("Layer de obstáculos")] private LayerMask obstacleLayer;
+    // Detecta si hay espacio suficiente para desplazarse
+    [SerializeField, Tooltip("Detecta si hay espacio suficiente para desplazarse")] private float slideHeightRayOffsetY = 1.0f;
+    // Longitud del raycast superior
+    [SerializeField, Tooltip("Longitud del raycast superior")] private float slideHeightRayLength = 1.0f;
+
+    [Header("Ledge")]
+    // Longitud de rayo para detectar salientes (por debajo nuestro)
+    [SerializeField, Tooltip("Longitud de rayo para detectar salientes (por debajo nuestro)")] private float ledgeRayLength = 10f;
+    // Longitud de rayo para detectar salientes escalables (por encima nuestro)
+    [SerializeField, Tooltip("Longitud de rayo para detectar salientes escalables (por encima nuestro)")] private float climbLedgeRayLength = 1.5f;
     // distancia para que no salga del saliente
-    [SerializeField] private float originOffset = 0.65f;
-    [SerializeField] private LayerMask obstacleLayer;
-    [SerializeField] private LayerMask climbLedgeLayer;
+    [SerializeField, Tooltip("distancia para que no salga del saliente")] private float originOffset = 0.65f;
     // Threshold = límite
-    [SerializeField] private float ledgeHeightThreshold = 0.75f;
-    [SerializeField] private float ledgeSpacing = 0.25f;
+    // Umbral de altura para considerar un borde como un saliente 
+    [SerializeField, Tooltip("Umbral de altura para considerar un borde como un saliente ")] private float ledgeHeightThreshold = 0.75f;
+    // Espacios entre rayos para saber si el obstaculo es escalable
+    [SerializeField, Tooltip("Espacios entre rayos para saber si el obstaculo es escalable")] private float ledgeSpacing = 0.25f;
+    // Layer de salientes de escalada
+    [SerializeField, Tooltip("Layer de salientes de escalada")] private LayerMask climbLedgeLayer;
+
+    // Usamos esto en PlayerController para restringir saltos normales en casos de haber obstáculos, permitiendo así realizar acciones de parkour
+    public bool InFrontOfObstacle { get; private set; }
 
     public ObstacleHitData ObstacleCkech()
     {
@@ -27,6 +47,21 @@ public class EnvironmentScanner : MonoBehaviour
         hitData.forwardHitFound = Physics.Raycast(forwardOrigin, transform.forward, out hitData.forwardHit, forwardRayLength, obstacleLayer);
 
         Debug.DrawRay(forwardOrigin, transform.forward * forwardRayLength, hitData.forwardHitFound ? Color.green : Color.red);
+
+        // origen del nuevo rayo más elevado para la acción de slide
+        var upperOrigin = transform.position + forwardOffset + Vector3.up * slideHeightRayOffsetY;
+        bool lowerHit = hitData.forwardHitFound;
+        // lanzamos el rayo superior
+        bool upperHit = Physics.Raycast(upperOrigin, transform.forward, out hitData.slideHit, slideHeightRayLength, obstacleLayer);
+
+        Debug.DrawRay(upperOrigin, transform.forward * slideHeightRayLength, upperHit ? Color.green : Color.red);
+
+        // Si no hay nada por debajo y arriba
+        hitData.canSlide = !lowerHit && upperHit;
+
+        // Para que no realize el salto
+        if (upperHit)
+            InFrontOfObstacle = true;
 
         // Si no golpeamos con algo en la parte delantera
         if (!hitData.forwardHitFound)
@@ -184,11 +219,20 @@ public class EnvironmentScanner : MonoBehaviour
 
     public struct ObstacleHitData
     {
+        // Usado para confirmar si el rayo golpea con algo en su sentido forward ( hacia adelante)
         public bool forwardHitFound;
+        // Usado para confirmar si el rayo golpea con algo en altura
         public bool heightHitFound;
 
+        // Almacenamos la información del Raycast en caso de golpeo
         public RaycastHit forwardHit;
+        // Almacenamos la información del Raycast en caso de golpeo
         public RaycastHit heightHit;
+
+        // Indica si es posible deslizarse
+        public bool canSlide;
+        // Almacenamos la información del Raycast para el deslizamiento
+        public RaycastHit slideHit;
     }
 
     public struct LedgeData // Salient
