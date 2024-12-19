@@ -3810,6 +3810,11 @@ MonoBehaviour:
   offset: {x: 0, y: 2}
   invertX: 0
   invertY: 1
+  preventingClippingCamera: 1
+  collisionRadius: 0.5
+  collisionLayers:
+    serializedVersion: 2
+    m_Bits: 0
 --- !u!114 &1096654763
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6538,6 +6543,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
+    - target: {fileID: 2999868023216881633, guid: c4367d73544992e409e992848996c7cc,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5000014494223227327, guid: c4367d73544992e409e992848996c7cc,
         type: 3}
       propertyPath: gatherInput
@@ -6592,6 +6602,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8955101535884244010, guid: c4367d73544992e409e992848996c7cc,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
