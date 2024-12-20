@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 1031080130}
   - component: {fileID: 1031080131}
   - component: {fileID: 1031080132}
+  - component: {fileID: 7448815601652569188}
   m_Layer: 0
   m_Name: sm_CoveredCar_01_02
   m_TagString: Untagged
@@ -90,6 +91,27 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 4300008, guid: abc00000000001156532593154161787, type: 3}
+--- !u!65 &7448815601652569188
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1031080129}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 6.460744, y: 1.7895803, z: 2.5757463}
+  m_Center: {x: 0.048990726, y: 0.8947898, z: 0.035993457}
 --- !u!1 &1031080133
 GameObject:
   m_ObjectHideFlags: 0
