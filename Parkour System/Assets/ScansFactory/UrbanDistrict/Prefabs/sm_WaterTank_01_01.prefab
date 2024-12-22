@@ -11,7 +11,8 @@ GameObject:
   - component: {fileID: 1030995686}
   - component: {fileID: 1030995687}
   - component: {fileID: 1030995688}
-  m_Layer: 0
+  - component: {fileID: 7362868757993282052}
+  m_Layer: 3
   m_Name: sm_WaterTank_01_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -90,6 +91,27 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 4300008, guid: abc00000000011889978556148228214, type: 3}
+--- !u!65 &7362868757993282052
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1030995685}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1.7456036, y: 1.537882, z: 1.5002575}
+  m_Center: {x: -0.011031151, y: 0.74843436, z: 0.008410454}
 --- !u!1 &1030995689
 GameObject:
   m_ObjectHideFlags: 0
