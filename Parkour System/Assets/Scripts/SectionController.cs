@@ -6,15 +6,22 @@ public class SectionController : MonoBehaviour
 {
     public Collider[] sectorOutterCollides;
 
+    public void EnableColliders(bool enable = true)
+    {
+        if (sectorOutterCollides != null)
+            foreach (var collider in sectorOutterCollides)
+                collider.enabled = true;
+    }
+
     private void OnTriggerEnter(Collider other)
     {
-        foreach (var collider in sectorOutterCollides)
-            collider.enabled = true;
+        EnableColliders();
+        SectionsManager.Instance.CurrentSection = this;
     }
 
     private void OnTriggerExit(Collider other)
     {
-        foreach (var collider in sectorOutterCollides)
-            collider.enabled = false;
+        EnableColliders(false);
+        SectionsManager.Instance.CurrentSection = null;
     }
 }
