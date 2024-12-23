@@ -4,17 +4,17 @@ using UnityEngine;
 
 public class SectionController : MonoBehaviour
 {
-    public List<Collider> sectorOutterCollides = new List<Collider>();
+    public Collider[] sectorOutterCollides;
 
-    // Start is called before the first frame update
-    void Start()
+    private void OnTriggerEnter(Collider other)
     {
-
+        foreach (var collider in sectorOutterCollides)
+            collider.enabled = true;
     }
 
-    // Update is called once per frame
-    void Update()
+    private void OnTriggerExit(Collider other)
     {
-
+        foreach (var collider in sectorOutterCollides)
+            collider.enabled = false;
     }
 }
