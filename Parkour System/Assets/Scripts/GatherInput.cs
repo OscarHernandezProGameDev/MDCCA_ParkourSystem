@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.InputSystem;
 using UnityEngine.Serialization;
 
@@ -12,6 +13,7 @@ public class GatherInput : MonoBehaviour
     private InputAction moveAction;
     private InputAction jumpAction;
     private InputAction dropAction;
+    private InputAction menuAction;
     private Vector2 _direction;
 
     [SerializeField] private float smoothTime = 4f;
@@ -24,6 +26,7 @@ public class GatherInput : MonoBehaviour
     public bool usingGamePad;
 
     public Vector2 Direction => _direction;
+    public UnityEvent MenuPerform;
 
     private void Awake()
     {
@@ -32,6 +35,7 @@ public class GatherInput : MonoBehaviour
         moveAction = playerInput.actions["Move"];
         jumpAction = playerInput.actions["Jump"];
         dropAction = playerInput.actions["Drop"];
+        menuAction = playerInput.actions["Menu"];
     }
 
     private void OnEnable()
@@ -50,6 +54,8 @@ public class GatherInput : MonoBehaviour
 
         dropAction.performed += Drop;
         dropAction.canceled += OnDropCanceled;
+
+        menuAction.performed += Menu;
     }
 
     private void OnDisable()
@@ -68,6 +74,8 @@ public class GatherInput : MonoBehaviour
 
         dropAction.performed -= Drop;
         dropAction.canceled -= OnDropCanceled;
+
+        menuAction.performed -= Menu;
     }
 
     private void Update()
@@ -80,6 +88,16 @@ public class GatherInput : MonoBehaviour
             Mathf.MoveTowards(smoothedDirection.y, _direction.y, smoothTime * Time.deltaTime)
         );
     }
+
+    // En el Input cuando los composive los valores o es 0 o 1, no interpola en el tiempo. Nos interesa esta funcionalidad para usuar en el Animator para pasa de los estados:
+    // Idle, Walk, Run. Usaremos el método Update
+
+    /*
+private void ReadDirection(InputAction.CallbackContext context)
+{
+    direction = context.ReadValue<Vector2>();
+}
+*/
 
     private void ReadLookInput(InputAction.CallbackContext context)
     {
@@ -115,13 +133,5 @@ public class GatherInput : MonoBehaviour
         tryToDrop = false;
     }
 
-    // En el Input cuando los composive los valores o es 0 o 1, no interpola en el tiempo. Nos interesa esta funcionalidad para usuar en el Animator para pasa de los estados:
-    // Idle, Walk, Run. Usaremos el método Update
-
-    /*
-private void ReadDirection(InputAction.CallbackContext context)
-{
-    direction = context.ReadValue<Vector2>();
-}
-*/
+    public void Menu(InputAction.CallbackContext context) => MenuPerform.Invoke();
 }
