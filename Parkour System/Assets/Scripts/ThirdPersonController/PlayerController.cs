@@ -15,12 +15,14 @@ using static EnvironmentScanner;
 public class PlayerController : MonoBehaviour
 {
     [SerializeField] private GatherInput gatherInput;
+    [Header("Movement")]
     [SerializeField] private float moveSpeed = 5f, rotationSpeed = 500f;
+    [SerializeField] private float jumpPower = 8f;
 
     [Header("GroundCheck")]
-    [SerializeField]
-    private float groundCheckRadius = 0.2f;
-
+    [SerializeField] private GameObject groundCheckPositionLeft;
+    [SerializeField] private GameObject groundCheckPositionRight;
+    [SerializeField] private float groundCheckRadius = 0.2f;
     [SerializeField] private Vector3 groundCheckOffset;
     [SerializeField] private LayerMask groundLayer;
 
@@ -30,6 +32,7 @@ public class PlayerController : MonoBehaviour
     private Animator animator;
 
     private bool? _isGrounded;
+    private bool isJumping = false;
     private Vector3 moveInput;
     private Vector3 desiredMoveDir;
     private Vector3 moveDir;
@@ -141,17 +144,50 @@ public class PlayerController : MonoBehaviour
         if (IsHanging)
             return;
 
-        velocity = Vector3.zero;
+        // línea comentada tras la implementación del salto, si no lo hacemos, el salto deja de seguir su rumbo al soltar el input
+        // velocity = Vector3.zero;
         _isGrounded ??= CheckGround();
 
         var isGrounded = _isGrounded.Value;
 
         animator.SetBool("IsGrounded", isGrounded);
 
-        if (isGrounded)
+        ApplyGravity();
+
+        if (gatherInput.tryToJump && !InAction && !isJumping && !IsOnLedge && !IsHanging && !environmentScanner.InFrontOfObstacle)
+        {
+            ySpeed += jumpPower;
+            StartCoroutine(DoAction("NormalJump"));
+            isJumping = true;
+            gatherInput.tryToJump = false;
+            velocity.y = ySpeed;
+        }
+
+        //transform.position += moveDir * moveSpeed * Time.deltaTime;
+        characterController.Move(velocity * Time.deltaTime);
+        // ya no usamos moveDir.sqrMagnitude porque tenemos la variable moveAmount
+        if (moveAmount > 0f && moveDir.sqrMagnitude > 0.05f)
+        {
+            // para que mire en la direccion que mira el input
+            targetRotation = Quaternion.LookRotation(moveDir);
+            // Para hacer una rotacion suave
+        }
+
+        transform.rotation =
+            Quaternion.RotateTowards(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
+    }
+
+    private void ApplyGravity()
+    {
+        if (_isGrounded.Value && ySpeed < 0f) // Si estamos tocando en el suelo r y yspeed es negativo
         {
             // No lo podemos a cero para asegurarnos que el jugado siempre este en el suelo
             ySpeed = -1f;
+
+            // Si estabamos saltando y ahora estamos en el suelo, resetear isJumping
+            if (isJumping)
+                isJumping = false;
+
             velocity = desiredMoveDir * moveSpeed;
 
             // desiredMoveDir lo normalizamos para suaviar la curba dampTime
@@ -170,36 +206,32 @@ public class PlayerController : MonoBehaviour
         }
         else
         {
-            velocity = transform.forward * moveSpeed / 2;
+            // Si no estamos haciendo el salto normal es que estamos cayendo, si caemmos avanzamos hacia donde nos moviamos al la mitad de la velocidad
+            if (!isJumping)
+                velocity = transform.forward * moveSpeed / 2;
             ySpeed += Physics.gravity.y * Time.deltaTime;
         }
 
+        // Pasamos ySpeed al eje Y de nuestro Vector 3 velocity para aplicar gravedad (y ahora saltos)
         velocity.y = ySpeed;
-
-        //transform.position += moveDir * moveSpeed * Time.deltaTime;
-        characterController.Move(velocity * Time.deltaTime);
-        // ya no usamos moveDir.sqrMagnitude porque tenemos la variable moveAmount
-        if (moveAmount > 0f && moveDir.sqrMagnitude > 0.05f)
-        {
-            // para que mire en la direccion que mira el input
-            targetRotation = Quaternion.LookRotation(moveDir);
-            // Para hacer una rotacion suave
-        }
-
-        transform.rotation =
-            Quaternion.RotateTowards(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
     }
 
     void OnDrawGizmosSelected()
     {
         Gizmos.color = new Color(0, 1, 0, 0.5f);
-        Gizmos.DrawSphere(transform.TransformPoint(groundCheckOffset), groundCheckRadius);
+        //Gizmos.DrawSphere(transform.TransformPoint(groundCheckOffset), groundCheckRadius);
+        Gizmos.DrawSphere(groundCheckPositionLeft.transform.TransformPoint(groundCheckOffset), groundCheckRadius);
+        Gizmos.DrawSphere(groundCheckPositionRight.transform.TransformPoint(groundCheckOffset), groundCheckRadius);
     }
 
     private bool CheckGround()
     {
+        //bool isGrounded =
+        //    Physics.CheckSphere(transform.TransformPoint(groundCheckOffset), groundCheckRadius, groundLayer);
+
         bool isGrounded =
-            Physics.CheckSphere(transform.TransformPoint(groundCheckOffset), groundCheckRadius, groundLayer);
+            Physics.CheckSphere(groundCheckPositionLeft.transform.TransformPoint(groundCheckOffset), groundCheckRadius, groundLayer)
+            || Physics.CheckSphere(groundCheckPositionRight.transform.TransformPoint(groundCheckOffset), groundCheckRadius, groundLayer);
 
         return isGrounded;
     }
