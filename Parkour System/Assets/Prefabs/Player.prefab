@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 1612581022753967191}
   - component: {fileID: 8402852193997392414}
   - component: {fileID: 5000014494223227327}
+  - component: {fileID: 2477834480960491790}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -53,6 +54,7 @@ MonoBehaviour:
   gatherInput: {fileID: 0}
   moveSpeed: 5
   rotationSpeed: 500
+  jumpPower: 8
   groundCheckPositionLeft: {fileID: 6749590433016695861}
   groundCheckPositionRight: {fileID: 5027648312287832256}
   groundCheckRadius: 0.13
@@ -179,6 +181,27 @@ MonoBehaviour:
   handOffsetShimmyLeft: {x: 0.2, y: 0.02, z: 0.1}
   handOffsetShimmyRight: {x: 0.2, y: 0.02, z: 0.1}
   handOffsetDropToHang: {x: 0.2, y: 0.19, z: -0.09}
+--- !u!114 &2477834480960491790
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2999868023216881633}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eca2bee30cb87764ab6f5913bd711917, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  animator: {fileID: 1612581022753967191}
+  obstacleLayer:
+    serializedVersion: 2
+    m_Bits: 8
+  leftFootTarget: {fileID: 7946840496697719368}
+  rightFootTarget: {fileID: 6902825871589650788}
+  footOffset: 0.12
+  ikLerpSpeed: 5
+  ikWeight: 0
 --- !u!1 &5027648312287832256
 GameObject:
   m_ObjectHideFlags: 0
