@@ -37,7 +37,7 @@ public class EnvironmentScanner : MonoBehaviour
     [SerializeField, Tooltip("Layer de salientes de escalada")] private LayerMask climbLedgeLayer;
 
     // Usamos esto en PlayerController para restringir saltos normales en casos de haber obstáculos, permitiendo así realizar acciones de parkour
-    public bool InFrontOfObstacle { get; private set; }
+    [field: SerializeField, Header("Debug")] public bool InFrontOfObstacle { get; private set; }
 
     public ObstacleHitData ObstacleCkech()
     {
@@ -58,10 +58,6 @@ public class EnvironmentScanner : MonoBehaviour
 
         // Si no hay nada por debajo y arriba
         hitData.canSlide = !lowerHit && upperHit;
-
-        // Para que no realize el salto
-        if (upperHit)
-            InFrontOfObstacle = true;
 
         // Si no golpeamos con algo en la parte delantera
         if (!hitData.forwardHitFound)
@@ -94,6 +90,9 @@ public class EnvironmentScanner : MonoBehaviour
 
         if (hitData.forwardHitFound)
         {
+            // Confirmamos que estamos enfrente de un obstáculo (lo usamos para el salto normal en PlayerController)
+            InFrontOfObstacle = true;
+
             // Añadimos un desplazamiento minúsculo hacia adelante para asegurarnos 100% de que el rayo en altura choque con el obstáculo 
             Vector3 forwardOffset = transform.forward * 0.001f;
 
@@ -105,6 +104,10 @@ public class EnvironmentScanner : MonoBehaviour
 
             Debug.DrawRay(heightOrigin, Vector3.down * heightRayLength,
                 hitData.heightHitFound ? Color.green : Color.red);
+        }
+        else // *Añadido* Si no chocamos con nada, configuramos booleanas a falso, ni hay obstáculo (lo usamos para el salto normal en PlayerController)
+        {
+            InFrontOfObstacle = false;
         }
 
         return hitData;

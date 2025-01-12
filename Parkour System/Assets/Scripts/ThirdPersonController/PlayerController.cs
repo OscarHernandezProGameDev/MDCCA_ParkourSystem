@@ -26,13 +26,15 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private Vector3 groundCheckOffset;
     [SerializeField] private LayerMask groundLayer;
 
+    [Header("Debug")]
+
     private CameraController cameraController;
     private EnvironmentScanner environmentScanner;
     private CharacterController characterController;
     private Animator animator;
 
-    private bool? _isGrounded;
-    private bool isJumping = false;
+    [SerializeField] private bool? _isGrounded;
+    [SerializeField] private bool isJumping = false;
     private Vector3 moveInput;
     private Vector3 desiredMoveDir;
     private Vector3 moveDir;
@@ -44,13 +46,13 @@ public class PlayerController : MonoBehaviour
 
     public float RotationSpeed => rotationSpeed;
 
-    public bool IsOnLedge { get; set; }
+    [field: SerializeField] public bool IsOnLedge { get; set; }
 
     public LedgeData LedgeData { get; set; }
 
     public bool HasControl { get => hasControl; set => hasControl = value; }
-    public bool InAction { get; private set; }
-    public bool IsHanging { get; set; }
+    [field: SerializeField] public bool InAction { get; private set; }
+    [field: SerializeField] public bool IsHanging { get; set; }
     public bool IsGrounded => _isGrounded ??= CheckGround();
 
     public void SetControl(bool hasControl)
