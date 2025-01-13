@@ -346,10 +346,10 @@ GameObject:
   - component: {fileID: 7109382640426455419}
   - component: {fileID: 6920460861274688954}
   - component: {fileID: 1732942420444153536}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: sm_Ad_01_2
   m_TagString: Untagged
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: 2974397684917235467, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 2147483647
   m_IsActive: 1
@@ -698,8 +698,17 @@ PrefabInstance:
     m_TransformParent: {fileID: 8293377462992890744}
     m_Modifications:
     - target: {fileID: 1031011503, guid: abc00000000017175511655808364940, type: 3}
+      propertyPath: m_Icon
+      value: 
+      objectReference: {fileID: 2974397684917235467, guid: 0000000000000000d000000000000000,
+        type: 0}
+    - target: {fileID: 1031011503, guid: abc00000000017175511655808364940, type: 3}
       propertyPath: m_Name
       value: sm_Ad_01_04
+      objectReference: {fileID: 0}
+    - target: {fileID: 1031011503, guid: abc00000000017175511655808364940, type: 3}
+      propertyPath: m_Layer
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 1031011503, guid: abc00000000017175511655808364940, type: 3}
       propertyPath: m_IsActive
@@ -963,8 +972,17 @@ PrefabInstance:
     m_TransformParent: {fileID: 8293377462992890744}
     m_Modifications:
     - target: {fileID: 1031011623, guid: abc00000000003362009332212500290, type: 3}
+      propertyPath: m_Icon
+      value: 
+      objectReference: {fileID: 2974397684917235467, guid: 0000000000000000d000000000000000,
+        type: 0}
+    - target: {fileID: 1031011623, guid: abc00000000003362009332212500290, type: 3}
       propertyPath: m_Name
       value: sm_Ad_01_02
+      objectReference: {fileID: 0}
+    - target: {fileID: 1031011623, guid: abc00000000003362009332212500290, type: 3}
+      propertyPath: m_Layer
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 1031011623, guid: abc00000000003362009332212500290, type: 3}
       propertyPath: m_IsActive
@@ -1117,8 +1135,17 @@ PrefabInstance:
     m_TransformParent: {fileID: 8293377462992890744}
     m_Modifications:
     - target: {fileID: 1031011543, guid: abc00000000012244790751014355320, type: 3}
+      propertyPath: m_Icon
+      value: 
+      objectReference: {fileID: 2974397684917235467, guid: 0000000000000000d000000000000000,
+        type: 0}
+    - target: {fileID: 1031011543, guid: abc00000000012244790751014355320, type: 3}
       propertyPath: m_Name
       value: sm_Ad_01_04_1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1031011543, guid: abc00000000012244790751014355320, type: 3}
+      propertyPath: m_Layer
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 1031011543, guid: abc00000000012244790751014355320, type: 3}
       propertyPath: m_IsActive
@@ -1275,8 +1302,17 @@ PrefabInstance:
     m_TransformParent: {fileID: 8293377462992890744}
     m_Modifications:
     - target: {fileID: 1031011523, guid: abc00000000012407730909185934165, type: 3}
+      propertyPath: m_Icon
+      value: 
+      objectReference: {fileID: 2974397684917235467, guid: 0000000000000000d000000000000000,
+        type: 0}
+    - target: {fileID: 1031011523, guid: abc00000000012407730909185934165, type: 3}
       propertyPath: m_Name
       value: sm_Ad_01_05
+      objectReference: {fileID: 0}
+    - target: {fileID: 1031011523, guid: abc00000000012407730909185934165, type: 3}
+      propertyPath: m_Layer
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 1031011523, guid: abc00000000012407730909185934165, type: 3}
       propertyPath: m_IsActive
@@ -1342,8 +1378,17 @@ PrefabInstance:
     m_TransformParent: {fileID: 8293377462992890744}
     m_Modifications:
     - target: {fileID: 1031011863, guid: abc00000000009546421677701322858, type: 3}
+      propertyPath: m_Icon
+      value: 
+      objectReference: {fileID: 2974397684917235467, guid: 0000000000000000d000000000000000,
+        type: 0}
+    - target: {fileID: 1031011863, guid: abc00000000009546421677701322858, type: 3}
       propertyPath: m_Name
       value: sm_Ad_01_02_1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1031011863, guid: abc00000000009546421677701322858, type: 3}
+      propertyPath: m_Layer
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 1031011863, guid: abc00000000009546421677701322858, type: 3}
       propertyPath: m_IsActive
@@ -1409,8 +1454,17 @@ PrefabInstance:
     m_TransformParent: {fileID: 8293377462992890744}
     m_Modifications:
     - target: {fileID: 1031011883, guid: abc00000000005502400672753894741, type: 3}
+      propertyPath: m_Icon
+      value: 
+      objectReference: {fileID: 2974397684917235467, guid: 0000000000000000d000000000000000,
+        type: 0}
+    - target: {fileID: 1031011883, guid: abc00000000005502400672753894741, type: 3}
       propertyPath: m_Name
       value: sm_Ad_01_01_1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1031011883, guid: abc00000000005502400672753894741, type: 3}
+      propertyPath: m_Layer
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 1031011883, guid: abc00000000005502400672753894741, type: 3}
       propertyPath: m_IsActive

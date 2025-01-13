@@ -32,7 +32,7 @@ Transform:
   m_GameObject: {fileID: 2999868023216881633}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
-  m_LocalPosition: {x: 15.61, y: 0, z: -8.5}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -62,6 +62,10 @@ MonoBehaviour:
   groundLayer:
     serializedVersion: 2
     m_Bits: 8
+  isJumping: 0
+  <IsOnLedge>k__BackingField: 0
+  <InAction>k__BackingField: 0
+  <IsHanging>k__BackingField: 0
 --- !u!114 &364747207721187839
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -112,6 +116,7 @@ MonoBehaviour:
   climbLedgeLayer:
     serializedVersion: 2
     m_Bits: 64
+  <InFrontOfObstacle>k__BackingField: 0
 --- !u!95 &1612581022753967191
 Animator:
   serializedVersion: 7
