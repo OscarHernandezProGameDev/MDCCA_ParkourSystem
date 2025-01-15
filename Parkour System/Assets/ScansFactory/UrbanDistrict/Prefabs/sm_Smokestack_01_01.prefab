@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 1030999296}
   - component: {fileID: 1030999297}
   - component: {fileID: 1030999298}
+  - component: {fileID: 4009388320329839027}
   m_Layer: 0
   m_Name: sm_Smokestack_01_01
   m_TagString: Untagged
@@ -90,6 +91,27 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 4300008, guid: abc00000000007378076249807200632, type: 3}
+--- !u!65 &4009388320329839027
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1030999295}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 0
+  serializedVersion: 3
+  m_Size: {x: 0.6742407, y: 1.044458, z: 0.9055602}
+  m_Center: {x: 0.011958092, y: 0.50767976, z: 0.004147291}
 --- !u!1 &1030999299
 GameObject:
   m_ObjectHideFlags: 0
